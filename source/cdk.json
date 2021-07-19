@@ -1,0 +1,13 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "cluster_name": "spark-on-eks",
+    "solution_id": "SO0141",
+    "solution_name": "sql-based-etl-with-apache-spark-on-amazon-eks",
+    "version": "v1.0.0",
+    "@aws-cdk/core:enableStackNameDuplicates": "true",
+    "aws-cdk:enableDiffNoFail": "true",
+    "@aws-cdk/core:stackRelativeExports": "true",
+    "@aws-cdk/core:newStyleStackSynthesis": "true"
+  }
+}

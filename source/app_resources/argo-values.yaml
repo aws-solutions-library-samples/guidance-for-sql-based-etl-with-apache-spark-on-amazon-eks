@@ -1,0 +1,22 @@
+controller:
+  workflowNamespaces:
+    - argo
+init:
+  serviceAccount: arcjob    
+workflow:
+  namespace: spark
+  serviceAccount:
+    create: false
+    name: arcjob
+server:
+  extraArgs:
+  - --auth-mode
+  - client
+  ingress:  
+    enabled: true  
+    annotations:    
+      kubernetes.io/ingress.class: alb
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/success-codes: 200,301,302
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 2746}]'

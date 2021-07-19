@@ -1,0 +1,61 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: scd2-job-
+  namespace: spark
+spec:
+  serviceAccountName: arcjob
+  entrypoint: scd2-process
+  arguments:
+    parameters:
+    - name: codeBucket
+      value: cfn_value
+  templates:
+  - name: scd2-process
+    dag:
+      tasks:
+        - name: initial-load
+          templateRef:
+            name: spark-template
+            template: smallJob
+          arguments:
+            parameters:
+            - name: jobId
+              value: initial-load
+            - name: image
+              value: {{ECR_URL}}
+            - name: configUri
+              value: "s3a://{{workflow.parameters.codeBucket}}/app_code/job/initial_load.ipynb"
+            - name: parameters
+              value: "--ETL_CONF_DATALAKE_LOC={{workflow.parameters.codeBucket}}"
+        - name: delta-load
+          templateRef:
+            name: spark-template
+            template: smallJob
+          arguments:
+            parameters:
+            - name: jobId
+              value: delta-load 
+            - name: image
+              value: {{ECR_URL}}
+            - name: configUri
+              value: "s3a://{{workflow.parameters.codeBucket}}/app_code/job/delta_load.ipynb"
+            - name: parameters
+              value: "--ETL_CONF_DATALAKE_LOC={{workflow.parameters.codeBucket}}"
+        - name: SCD2-merge
+          dependencies: [initial-load, delta-load]
+          templateRef:
+            name: spark-template
+            template: smallJob
+          arguments:
+            parameters:
+            - name: jobId
+              value: SCD2-merge 
+            - name: image
+              value: {{ECR_URL}}
+            - name: configUri
+              value: "s3a://{{workflow.parameters.codeBucket}}/app_code/job/scd2_merge.ipynb"
+            - name: parameters
+              value: "--ETL_CONF_DATALAKE_LOC={{workflow.parameters.codeBucket}}"           
+            - name: sparkConf
+              value: "--conf spark.databricks.delta.merge.repartitionBeforeWrite.enabled=true" 

@@ -1,0 +1,46 @@
+[
+  {
+    "name": "id",
+    "description": "contact id",
+    "trim": true,
+    "nullable": false,
+    "primaryKey": true,
+    "type": "integer"
+  },
+  {
+    "name": "name",
+    "description": "contact name",
+    "trim": true,
+    "nullable": true,
+    "primaryKey": false,
+    "type": "string",
+    "nullableValues": [
+      "",
+      "null"
+    ]
+  },
+  {
+    "name": "email",
+    "description": "contact email",
+    "trim": true,
+    "nullable": true,
+    "primaryKey": false,
+    "type": "string",
+    "nullableValues": [
+      "",
+      "null"
+    ]
+  },
+  {
+    "name": "state",
+    "description": "state in the country of the contact",
+    "trim": true,
+    "nullable": true,
+    "primaryKey": false,
+    "type": "string",
+    "nullableValues": [
+      "",
+      "null"
+    ]
+  }
+]

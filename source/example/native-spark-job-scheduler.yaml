@@ -1,0 +1,80 @@
+apiVersion: "sparkoperator.k8s.io/v1beta2"
+kind: SparkApplication
+metadata:
+  name: word-count
+  namespace: spark
+spec:
+  type: Python
+  pythonVersion: "3"
+  deployMode: cluster
+  image: {{ECR_URL}}
+  imagePullPolicy: Always
+  mainApplicationFile: "s3a://$(BUCKET_PARAM)/app_code/job/wordcount.py"
+  arguments: ["s3a://amazon-reviews-pds/parquet/","s3a://$(BUCKET_PARAM)/app_code/output/native"]
+  sparkVersion: "3.0.3"
+  sparkConf:
+    "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
+    "spark.hadoop.fs.s3a.aws.credentials.provider": "com.amazonaws.auth.WebIdentityTokenCredentialsProvider"
+    "spark.kubernetes.allocation.batch.size": "15" 
+    "spark.io.encryption.enabled": "true"
+    "spark.kubernetes.local.dirs.tmpfs": "true"
+  volumes:
+    - name: spark-local-dir-1
+      hostPath:
+        path: "/tmp"
+        type: Directory      
+  dynamicAllocation:
+    enabled: true
+    initialExecutors: 1
+    minExecutors: 1
+    maxExecutors: 20
+  restartPolicy:
+    type: OnFailure
+    onFailureRetries: 3
+    onFailureRetryInterval: 10
+    onSubmissionFailureRetries: 5
+    onSubmissionFailureRetryInterval: 5          
+  driver:
+    # run driver on Spot
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:  
+          nodeSelectorTerms:
+            - matchExpressions:
+              - key: lifecycle
+                operator: In 
+                values: 
+                - Ec2Spot
+                # - OnDemand    
+    env:
+      - name: BUCKET_PARAM
+        valueFrom:
+          configMapKeyRef:
+            name: special-config
+            key: codeBucket
+    cores: 1
+    memory: "1G"
+    labels:
+      role: driver
+    serviceAccount: nativejob
+    volumeMounts:
+      - name: spark-local-dir-1
+        mountPath: "/tmp"
+  executor:
+   # run executors on Spot
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:     
+          nodeSelectorTerms:
+            - matchExpressions:
+              - key: lifecycle
+                operator: In 
+                values: 
+                - Ec2Spot    
+    cores: 1
+    memory: "4G"
+    labels:
+      role: executor
+    volumeMounts:
+      - name: spark-local-dir-1
+        mountPath: "/tmp"

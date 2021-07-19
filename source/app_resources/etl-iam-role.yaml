@@ -1,0 +1,37 @@
+  - Effect: Allow
+    Action: 
+    - s3:ListBucket
+    - s3:GetBucketLocation
+    Resource:
+    - arn:aws:s3:::{{codeBucket}}
+    - arn:aws:s3:::{{datalakeBucket}}
+    - arn:aws:s3:::nyc-tlc
+  - Effect: Allow
+    Action:
+    - s3:PutObject
+    - s3:GetObject
+    Resource:
+    - arn:aws:s3:::{{codeBucket}}/*
+    - arn:aws:s3:::{{datalakeBucket}}/*
+    - arn:aws:s3:::nyc-tlc/*
+  - Effect: Allow
+    Action:
+    - s3:DeleteObject
+    Resource:
+    - arn:aws:s3:::{{codeBucket}}/*
+    - arn:aws:s3:::{{datalakeBucket}}/*
+  - Effect: Allow
+    Action:
+    - kms:Decrypt
+    - kms:Encrypt
+    - kms:GenerateDataKey*
+    - athena:StartQueryExecution
+    - athena:GetQueryExecution
+    - athena:GetQueryResults
+    - glue:CreateTable
+    - glue:CreateDatabase
+    - glue:CreatePartition
+    - glue:UpdatePartition
+    - glue:GetDatabase
+    Resource:
+      - '*'   

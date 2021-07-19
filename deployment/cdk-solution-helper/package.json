@@ -1,0 +1,11 @@
+{
+    "name": "cdk-solution-helper",
+    "version": "0.1.0",
+    "devDependencies": {
+        "fs": "0.0.1-security"
+    },
+    "dependencies": {
+        "aws-cdk": "^1.96.0",
+        "fs": "0.0.1-security"
+    }
+}

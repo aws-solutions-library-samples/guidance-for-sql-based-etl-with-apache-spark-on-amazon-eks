@@ -1,0 +1,40 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: etl-workflow-role
+  namespace: spark
+rules:
+  - apiGroups: [""]
+    resources: ["pods","pods/exec","configmaps","services"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["batch", "extensions"]
+    resources: ["jobs"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]  
+  - apiGroups: [""]
+    resources: ["events","pods/log","serviceaccounts", "secrets","endpoints"]
+    verbs: ["list", "get", "watch"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["create", "delete", "get", "list"]
+  - apiGroups: ["argoproj.io"]
+    resources: ["workflows","workflows/finalizers"]
+    verbs: ["*"]
+  - apiGroups: ["argoproj.io"]
+    resources: ["workflowtemplates","workflowtemplates/finalizers"]
+    verbs: ["get", "list", "watch"]
+    
+  
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{MY_SA}}-role-binding
+  namespace: spark
+subjects:
+  - kind: ServiceAccount
+    name: {{MY_SA}}
+    namespace: spark
+roleRef:
+  kind: Role
+  name: etl-workflow-role
+  apiGroup: rbac.authorization.k8s.io

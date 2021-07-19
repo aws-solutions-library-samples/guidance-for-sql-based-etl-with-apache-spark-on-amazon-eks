@@ -1,0 +1,54 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{MY_SA}}-role-binding
+  namespace: jupyter
+subjects:
+  - kind: ServiceAccount
+    name: {{MY_SA}}
+    namespace: jupyter
+roleRef:
+  kind: Role
+  name: hub
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jupyterhub
+  namespace: jupyter
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/success-codes: 200,301,302
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+  labels:
+    app: jupyterhub
+spec:
+  rules:
+  - host: ""
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+              name: proxy-public
+              port:
+                number: 80
+          
+---
+apiVersion: kubernetes-client.io/v1
+kind: ExternalSecret
+metadata:
+  name: jupyter-external-secret
+  namespace: jupyter
+spec:
+  backendType: secretsManager
+  region: {{REGION}}
+  data:
+    - key: {{SECRET_NAME}}
+      name: password
+      property: password          

@@ -1,0 +1,120 @@
+hub:
+  db:
+    type: sqlite-memory
+  extraConfig:
+    overrideServiceAccount: |
+      import os, sys
+      
+      c.JupyterHub.authenticator_class = 'jupyterhub.auth.DummyAuthenticator'
+      c.DummyAuthenticator.password = os.environ['LOGIN']
+      c.Authenticator.admin_users = {"service-admin"}
+      c.JupyterHub.service_tokens = {
+          "secret-token": "service-admin",
+      }
+      # this script allows serviceAccountName to use dynamic naming based on {unescaped_username}"
+      async def override_service_account_hook(kube_spawner):
+        if kube_spawner.service_account is not None:
+          kube_spawner.service_account = kube_spawner._expand_user_properties(kube_spawner.service_account)
+          kube_spawner.env['USER_NAME'] = kube_spawner._expand_user_properties("{unescaped_username}")
+      c.KubeSpawner.pre_spawn_hook = override_service_account_hook
+      
+      # setup timeout
+      c.JupyterHub.cookie_max_age_days = 0.0105
+      c.Authenticator.refresh_pre_spawn = True
+      c.JupyterHub.services = [
+        {
+            "name": "idle_culler",
+            "admin": True,
+            "command": [sys.executable, "-m", "jupyterhub_idle_culler", "--timeout=1800"],
+        }
+      ]
+
+  extraEnv:
+    - name: LOGIN
+      valueFrom:
+        secretKeyRef:
+          name: jupyter-external-secret
+          key: password
+  nodeSelector:
+    lifecycle: Ec2Spot
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+          
+proxy:
+  secretToken: "*****"
+  service:
+    type: ClusterIP
+  chp:
+    nodeSelector:
+      lifecycle: OnDemand    
+
+singleuser:
+  defaultUrl: "/lab"
+  nodeSelector:
+    lifecycle: OnDemand
+  image:
+    name: ghcr.io/tripl-ai/arc-jupyter
+    tag: arc-jupyter_3.13.1_scala_2.12_hadoop_3.2.0_1.4.0
+    pullPolicy: Always
+  lifecycleHooks:
+    postStart:
+      exec:
+        command:
+          - "bash"
+          - "-c"
+          - >
+            cp -r /opt/.jupyter $HOME/.jupyter;
+            echo "git clone https://github.com/awslabs/sql-based-etl-with-apache-spark-on-amazon-eks";
+            git clone https://github.com/awslabs/sql-based-etl-with-apache-spark-on-amazon-eks;
+
+  serviceAccountName: "{username}"
+  cpu:
+    guarantee: 0.25
+    limit: 0.5
+  memory:
+    guarantee: 4G
+    limit: 4G
+  extraEnv:
+    CONF_ALLOW_EXPORT: "true"
+    JAVA_OPTS: -Xmx4G
+    ETL_CONF_DATALAKE_LOC: {{codeBucket}}
+    ETL_CONF_AWS_REGION: {{region}}
+  storage:
+    type: none
+  # storage:
+  #   type: dynamic
+  #   capacity: 10G
+  #   homeMountPath: '/home/{username}/data'
+  #   # mount to EBS  
+  #   dynamic:
+  #     storageClass: gp2 
+  profileList:
+  - default: True
+    display_name: "Small (default): Arc-Jupyter Development Environment"
+    description: "4GB Memory & 1vCPUs"
+    kubespawner_override:
+      cpu_guarantee: 0.5
+      cpu_limit: 1
+      mem_guarantee: 4G
+      mem_limit: 10G
+  - display_name: "Big Arc-Jupyter Development Environment"
+    description: "15GB Memory & 2vCPUs"
+    kubespawner_override:
+      cpu_guarantee: 0.5
+      cpu_limit: 2
+      mem_guarantee: 10G
+      mem_limit: 15G
+
+prePuller:
+  hook:
+    enabled: false 
+
+# autoscacling setting
+scheduling:
+  userScheduler:
+    enabled: true
+    replicas: 1
+
+# debug:
+#   enabled: true      
