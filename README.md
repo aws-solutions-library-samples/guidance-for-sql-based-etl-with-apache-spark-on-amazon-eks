@@ -3,6 +3,10 @@ This is a project developed with Python [CDK](https://docs.aws.amazon.com/cdk/la
 
 We introduce a quality-aware design to increase data process productivity, by leveraging an open-source [Arc data framework](https://arc.tripl.ai/) for a user-centred declarative ETL solution. Additionally, we take considerations of the needs and expected skills from customers in data analytics, and accelerate their interaction with ETL practice in order to foster simplicity, while maximizing efficiency.
 
+This solution collects anonymous operational metrics to help AWS improve the
+quality of features of the solution. For more information, including how to disable
+this capability, please see the [implementation guide](https://docs.aws.amazon.com/solutions/latest/sql-based-etl-with-apache-spark-on-amazon-eks/collection-of-operational-metrics.html).
+
 ## Overview
 ![](source/images/architecture.png)
 
