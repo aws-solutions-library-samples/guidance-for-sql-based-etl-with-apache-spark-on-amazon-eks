@@ -27,7 +27,7 @@
 #  - version-code: version of the package
 
 # Important: CDK global version number
-cdk_version===1.96.0
+cdk_version===2.12.0
 
 # Check to see if the required parameters have been provided:
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
@@ -68,6 +68,7 @@ echo "--------------------------------------------------------------------------
 echo "cd $template_dir/deployment/cdk-solution-helper"
 cd $template_dir/deployment/cdk-solution-helper
 echo "npm install"
+npm audit fix --force
 npm install
 
 cd $template_dir
@@ -110,6 +111,7 @@ echo "--------------------------------------------------------------------------
 
 # # Install the global aws-cdk package
 echo "npm install -g aws-cdk@$cdk_version"
+npm audit fix --force
 npm install aws-cdk@$cdk_version
 
 # Run 'cdk synth' to generate raw solution outputs
@@ -139,7 +141,7 @@ done
 
 # Run the helper to clean-up the templates and remove unnecessary CDK elements
 echo "Run the helper to clean-up the templates and remove unnecessary CDK elements"
-echo "node $template_dir/cdk-solution-helper/index"
+echo "node $template_dir/deployment/cdk-solution-helper/index"
 node $template_dir/deployment/cdk-solution-helper/index
 if [ "$?" = "1" ]; then
 	echo "(cdk-solution-helper) ERROR: there is likely output above." 1>&2

@@ -11,8 +11,7 @@
 # and limitations under the License.  																				#                                                                              #
 ######################################################################################################################
   
-from aws_cdk.core import IConstruct
-
+from constructs import IConstruct
 def suppress_cfnnag_rule(rule_id: str, reason: str, cnstrt: IConstruct):    
     cnstrt.add_metadata('cfn_nag',{
         "rules_to_suppress": [{

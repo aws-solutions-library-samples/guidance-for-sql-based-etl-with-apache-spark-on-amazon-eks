@@ -21,9 +21,9 @@ except IOError as e:
 
 setuptools.setup(
     name="sql-based-etl",
-    version="1.0.0",
+    version="2.0.0",
 
-    description="A CDK Python app for SQL-based ETL",
+    description="A CDK v2 Python app for SQL-based ETL",
     long_description=long_description,
     long_description_content_type="text/markdown",
     
@@ -33,23 +33,8 @@ setuptools.setup(
     packages=setuptools.find_packages(where="./"),
 
     install_requires=[
-        "aws-cdk.core==1.96.0",
-        "aws-cdk.aws_iam==1.96.0",
-        "aws-cdk.aws_eks==1.96.0",
-        "aws-cdk.aws_ec2==1.96.0",
-        "aws-cdk.aws_s3==1.96.0",
-        "aws-cdk.aws_s3_deployment==1.96.0",
-        "aws_cdk.aws_secretsmanager==1.96.0",
-        "aws_cdk.aws_elasticloadbalancingv2==1.96.0",
-        "aws-cdk.aws_cloudfront==1.96.0",
-        "aws-cdk.aws_cloudfront_origins==1.96.0",
-        "aws-cdk.aws_kms==1.96.0",
-        "aws-cdk.aws_ecr==1.96.0",
-        "aws-cdk.aws_codepipeline==1.96.0",
-        "aws-cdk.aws_codebuild==1.96.0",
-        "aws-cdk.aws_codepipeline_actions==1.96.0",
-        "aws-cdk.aws_lambda==1.96.0",
-        "aws-cdk.custom_resources==1.96.0",
+        "aws-cdk-lib==2.12.0",
+        "constructs>=10.0.0,<11.0.0",
         "pyyaml==5.4"
     ],
 
@@ -67,6 +52,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
 
         "Topic :: Software Development :: Code Generators",
         "Topic :: Utilities",

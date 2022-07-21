@@ -11,7 +11,8 @@
 # and limitations under the License.  																				#                                                                              #
 ######################################################################################################################
 
-from aws_cdk.core import (Aws, Construct)
+from aws_cdk import Aws
+from constructs import Construct
 from aws_cdk.aws_eks import ICluster, KubernetesManifest
 from lib.util.manifest_reader import *
 import os

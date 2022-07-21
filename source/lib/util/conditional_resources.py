@@ -11,7 +11,8 @@
 #  and limitations under the License.                                                                                 #
 # #####################################################################################################################
 import jsii
-from aws_cdk.core import CfnCondition, CfnResource, IAspect, IConstruct
+from constructs import IConstruct
+from aws_cdk import CfnCondition, CfnResource, IAspect
 
 # This code enables `apply_aspect()` to apply conditions to a resource.
 # This way we can provision some resources if a condition is true.

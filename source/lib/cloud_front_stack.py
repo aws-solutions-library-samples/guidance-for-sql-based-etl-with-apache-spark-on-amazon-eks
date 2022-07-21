@@ -12,15 +12,16 @@
 ######################################################################################################################
 
 from aws_cdk import (
-    core,
+    NestedStack,Fn,
     aws_cloudfront_origins as origins,
     aws_cloudfront as cf,
     aws_elasticloadbalancingv2 as alb,
     aws_s3 as s3
 )
+from constructs import Construct
 import lib.util.override_rule as scan
 
-class NestedStack(core.NestedStack):
+class NestedStack(NestedStack):
 
     @property
     def jhub_cf(self):
@@ -30,7 +31,7 @@ class NestedStack(core.NestedStack):
     def argo_cf(self):
         return self._argo_cf
 
-    def __init__(self,scope: core.Construct, id: str,logbucket: str,argo_alb_dns_name: str, jhub_alb_dns_name: str, **kwargs) -> None:
+    def __init__(self,scope: Construct, id: str,logbucket: str,argo_alb_dns_name: str, jhub_alb_dns_name: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
 # //**********************************************************************************************************//
@@ -42,11 +43,11 @@ class NestedStack(core.NestedStack):
         self._jhub_cf = add_distribution(self, 'jhub_dist', jhub_alb_dns_name, 80, self._bucket)
         self._argo_cf = add_distribution(self, 'argo_dist', argo_alb_dns_name, 2746, self._bucket)
 
-def add_distribution(scope: core.Construct, id: str, alb_dns_name: str, port: int, logbucket: s3.IBucket
+def add_distribution(scope: Construct, id: str, alb_dns_name: str, port: int, logbucket: s3.IBucket
 ) -> cf.IDistribution:
 
-    load_balancer_arn=core.Fn.get_att(alb_dns_name,"DNSName")
-    security_group_id=core.Fn.get_att(alb_dns_name,"SecurityGroups")
+    load_balancer_arn=Fn.get_att(alb_dns_name,"DNSName")
+    security_group_id=Fn.get_att(alb_dns_name,"SecurityGroups")
 
     alb2 = alb.ApplicationLoadBalancer.from_application_load_balancer_attributes(scope, id,
             load_balancer_arn=load_balancer_arn.to_string(),

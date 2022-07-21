@@ -11,22 +11,20 @@
 # and limitations under the License.  																				#                                                                              #
 ######################################################################################################################
 
-from aws_cdk import (
-    core,
-    aws_iam as iam
-)
+from aws_cdk import (aws_iam as iam)
+from constructs import Construct
 from aws_cdk.aws_eks import ICluster, KubernetesManifest
 from lib.util.manifest_reader import load_yaml_replace_var_local
 import lib.util.override_rule as scan
 import os
 
-class SparkOnEksSAConst(core.Construct):
+class SparkOnEksSAConst(Construct):
 
     @property
     def jupyter_sa(self):
         return self._jupyter_sa.service_account_name
 
-    def __init__(self,scope: core.Construct, id: str, 
+    def __init__(self,scope: Construct, id: str, 
         eks_cluster: ICluster, 
         login_name: str, 
         code_bucket: str, 

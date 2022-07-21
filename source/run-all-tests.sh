@@ -31,7 +31,7 @@ setup_python_env() {
 	echo "Initiating virtual environment"
 	source .venv-test/bin/activate
 	echo "Installing python packages"
-	pip install -e source
+	pip3 install -e source
 	echo "deactivate virtual environment"
 	deactivate
 }
@@ -56,14 +56,17 @@ run_python_test() {
 	echo "------------------------------------------------------------------------------"
 	echo "[Test] Python path=$module_path module=$module_name"
 	echo "------------------------------------------------------------------------------"
+	
 
 	# setup coverage report path
 	mkdir -p $source_dir/test/coverage-reports
 	coverage_report_path=$source_dir/test/coverage-reports/$module_name.coverage.xml
+
 	echo "coverage report path set to $coverage_report_path"
 
 	# Use -vv for debugging
-	python3 -m pytest --cov --cov-fail-under=20 --cov-report=term-missing --cov-report "xml:$coverage_report_path"
+	python3 -m pytest --cov --cov-report=term-missing --cov-report "xml:$coverage_report_path"
+	
 	if [ "$?" = "1" ]; then
 		echo "(source/run-all-tests.sh) ERROR: there is likely output above." 1>&2
 		exit 1
@@ -99,7 +102,7 @@ run_source_unit_test() {
 			echo "------------------------------------------------------------------------------"
 			echo "[Test] Run tests against $folder"
 			echo "------------------------------------------------------------------------------"
-			pip install -r $folder/requirement-test.txt
+			pip3 install -r $folder/requirement-test.txt
 			run_python_test $folder
 			rm -rf *.egg-info
 		fi

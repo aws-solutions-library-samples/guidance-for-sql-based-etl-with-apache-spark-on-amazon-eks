@@ -12,7 +12,7 @@
 ######################################################################################################################
 
 #!/usr/bin/env python3
-from aws_cdk.core import (App,Tags,CfnOutput)
+from aws_cdk import (App,Tags,CfnOutput)
 from lib.spark_on_eks_stack import SparkOnEksStack
 from lib.cloud_front_stack import NestedStack
 

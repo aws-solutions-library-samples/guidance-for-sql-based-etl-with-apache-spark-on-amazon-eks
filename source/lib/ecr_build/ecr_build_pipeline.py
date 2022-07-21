@@ -12,28 +12,30 @@
 ######################################################################################################################
 #
 from aws_cdk import (
-    core,
+    RemovalPolicy,
+    Duration,
     aws_s3 as s3,
     aws_codepipeline as codepipeline,
     aws_codebuild as codebuild,
     aws_codepipeline_actions as codepipeline_actions,
     aws_ecr as ecr,
 ) 
+from constructs import Construct
 import lib.util.override_rule as scan
 
-class DockerPipelineConstruct(core.Construct):
+class DockerPipelineConstruct(Construct):
 
     @property
     def image_uri(self):
         return self.ecr_repo.repository_uri
 
-    def __init__(self,scope: core.Construct, id: str, codebucket: s3.IBucket, **kwargs,) -> None:
+    def __init__(self,scope: Construct, id: str, codebucket: s3.IBucket, **kwargs,) -> None:
         super().__init__(scope, id, **kwargs)
         
         # 1. Create ECR repositories
         self.ecr_repo=ecr.Repository(self,'ECRRepo',
             image_scan_on_push=True,
-            removal_policy=core.RemovalPolicy.DESTROY
+            removal_policy=RemovalPolicy.DESTROY
         )
         # 2. Setup deployment CI/CD to deploy docker image to ECR
         pipeline = codepipeline.Pipeline(self, "Pipeline",
@@ -51,9 +53,9 @@ class DockerPipelineConstruct(core.Construct):
                 'REPO_ECR': codebuild.BuildEnvironmentVariable(value=self.ecr_repo.repository_uri),
             },
             description='Pipeline for docker build',
-            timeout=core.Duration.minutes(60)
+            timeout=Duration.minutes(60)
         )
-        image_builder.apply_removal_policy(core.RemovalPolicy.DESTROY)
+        image_builder.apply_removal_policy(RemovalPolicy.DESTROY)
 
         # 3. grant permissions for the CI/CD
         codebucket.grant_read_write(pipeline.role)

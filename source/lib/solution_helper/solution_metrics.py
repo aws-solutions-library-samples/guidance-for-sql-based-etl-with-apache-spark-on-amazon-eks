@@ -10,7 +10,7 @@
 # OR CONDITIONS OF ANY KIND, express o#implied. See the License for the specific language governing permissions     #
 # and limitations under the License.  																				#                                                                              #
 ######################################################################################################################
-from aws_cdk.aws_cloudwatch import MetricStatConfig
+from constructs import Construct
 from aws_cdk.aws_s3 import IBucket
 from lib.util.conditional_resources import Condition
 from aws_cdk import (
@@ -18,9 +18,8 @@ from aws_cdk import (
     custom_resources as _custom_resources,
     aws_ec2 as _ec2
 )
-from aws_cdk.core import (
+from aws_cdk import (
     Aspects,
-    Construct,
     Fn, 
     Duration,
     CfnMapping, 
