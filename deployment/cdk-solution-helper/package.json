@@ -5,7 +5,6 @@
         "fs": "0.0.1-security"
     },
     "dependencies": {
-        "aws-cdk": "^1.96.0",
         "fs": "0.0.1-security"
     }
 }

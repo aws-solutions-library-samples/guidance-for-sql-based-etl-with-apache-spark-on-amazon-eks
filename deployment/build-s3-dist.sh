@@ -116,7 +116,7 @@ npm install aws-cdk@$cdk_version
 
 # Run 'cdk synth' to generate raw solution outputs
 echo "cdk synth --output=$staging_dist_dir"
-node_modules/aws-cdk/bin/cdk synth --output=$staging_dist_dir
+cdk synth --output=$staging_dist_dir
 
 # Remove unnecessary output files
 echo "cd $staging_dist_dir"
@@ -208,8 +208,8 @@ for d in `find . -mindepth 1 -maxdepth 1 -type d`; do
         source $venv_folder/bin/activate
         pip3 install --upgrade -q $source_dir --target $venv_folder/lib/python3.*/site-packages
         echo "package python artifact"
-        cd $staging_dist_dir/$fname/$venv_folder/lib/python3.*/site-packages
-        zip -qr9 $staging_dist_dir/$fname.zip .
+        cd $venv_folder/lib/python3.*/site-packages
+        zip -qr9 $staging_dist_dir/$fname.zip .  -x "aws_cdk/*"
         echo "zip -r $staging_dist_dir/$fname"
         cd $staging_dist_dir/$fname
         rm -rf $venv_folder
@@ -220,7 +220,8 @@ for d in `find . -mindepth 1 -maxdepth 1 -type d`; do
         echo "This is Node runtime"
         echo "===================================="
         echo "Clean and rebuild artifacts"
-        npm run clean
+        npm audit fix --force
+        npm run
         npm ci
         if [ "$?" = "1" ]; then
 	        echo "ERROR: Seems like package-lock.json does not exists or is out of sync with package.josn. Trying npm install instead" 1>&2
