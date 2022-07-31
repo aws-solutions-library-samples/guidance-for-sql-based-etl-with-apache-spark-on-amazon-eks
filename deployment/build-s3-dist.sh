@@ -68,7 +68,8 @@ echo "--------------------------------------------------------------------------
 echo "cd $template_dir/deployment/cdk-solution-helper"
 cd $template_dir/deployment/cdk-solution-helper
 echo "npm install"
-npm audit fix --force
+npm i --package-lock-only
+npm audit fix
 npm install
 
 cd $template_dir
@@ -111,12 +112,13 @@ echo "--------------------------------------------------------------------------
 
 # # Install the global aws-cdk package
 echo "npm install -g aws-cdk@$cdk_version"
-npm audit fix --force
+npm i --package-lock-only
+npm audit fix
 npm install aws-cdk@$cdk_version
 
 # Run 'cdk synth' to generate raw solution outputs
 echo "cdk synth --output=$staging_dist_dir"
-cdk synth --output=$staging_dist_dir
+node_modules/aws-cdk/bin/cdk synth --output=$staging_dist_dir
 
 # Remove unnecessary output files
 echo "cd $staging_dist_dir"
@@ -220,6 +222,7 @@ for d in `find . -mindepth 1 -maxdepth 1 -type d`; do
         echo "This is Node runtime"
         echo "===================================="
         echo "Clean and rebuild artifacts"
+        npm i --package-lock-only
         npm audit fix --force
         npm run
         npm ci
