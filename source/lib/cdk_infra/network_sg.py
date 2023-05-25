@@ -49,7 +49,7 @@ class NetworkSgConst(Construct):
         self._vpc.add_gateway_endpoint("S3GatewayEndpoint",
                                         service=ec2.GatewayVpcEndpointAwsService.S3,
                                         subnets=[ec2.SubnetSelection(subnet_type=ec2.SubnetType.PUBLIC),
-                                                 ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_NAT)])
+                                                 ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS)])
                                                  
         self._vpc.add_interface_endpoint("EcrDockerEndpoint",service=ec2.InterfaceVpcEndpointAwsService.ECR_DOCKER, security_groups=[self._vpc_endpoint_sg])
         self._vpc.add_interface_endpoint("CWLogsEndpoint", service=ec2.InterfaceVpcEndpointAwsService.CLOUDWATCH_LOGS,security_groups=[self._vpc_endpoint_sg])

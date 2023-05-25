@@ -55,7 +55,7 @@ singleuser:
     lifecycle: OnDemand
   image:
     name: ghcr.io/tripl-ai/arc-jupyter
-    tag: arc-jupyter_3.13.1_scala_2.12_hadoop_3.2.0_1.4.0
+    tag:  arc-jupyter_3.15.1_scala_2.12_hadoop_3.3.2_1.2.0_null_entrypoint
     pullPolicy: Always
   lifecycleHooks:
     postStart:

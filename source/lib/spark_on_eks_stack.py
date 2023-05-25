@@ -52,10 +52,11 @@ class SparkOnEksStack(Stack):
             description="Your existing S3 bucket to be accessed by Jupyter Notebook and ETL job. Default: blank",
             default=""
         )
-        login_name = CfnParameter(self, "jhubuser", type="String",
-            description="Your username login to jupyter hub",
-            default="sparkoneks"
-        )
+        login_name = "sparkoneks"
+        # login_name = CfnParameter(self, "jhubuser", type="String",
+        #     description="Your username login to jupyter hub. Only alphanumeric characters are allowed",
+        #     default="sparkoneks"
+        # )
 
         # Auto-generate a user login in secrets manager
         key = kms.Key(self, 'KMSKey',removal_policy=RemovalPolicy.DESTROY,enable_key_rotation=True)
@@ -63,7 +64,7 @@ class SparkOnEksStack(Stack):
         jhub_secret = secmger.Secret(self, 'jHubPwd', 
             generate_secret_string=secmger.SecretStringGenerator(
                 exclude_punctuation=True,
-                secret_string_template=json.dumps({'username': login_name.value_as_string}),
+                secret_string_template=json.dumps({'username': login_name}),
                 generate_string_key="password"),
             removal_policy=RemovalPolicy.DESTROY,
             encryption_key=key
@@ -87,7 +88,7 @@ class SparkOnEksStack(Stack):
         # 4. Spark app access control
         app_security = SparkOnEksSAConst(self,'spark_service_account', 
             eks_cluster.my_cluster, 
-            login_name.value_as_string,
+            login_name,
             self.app_s3.code_bucket,
             datalake_bucket.value_as_string
         )
@@ -96,8 +97,8 @@ class SparkOnEksStack(Stack):
         jhub_install= eks_cluster.my_cluster.add_helm_chart('JHubChart',
             chart='jupyterhub',
             repository='https://jupyterhub.github.io/helm-chart',
-            release='jhub',
-            version='0.11.1',
+            release='jupyterhub',
+            version='1.2.0',
             namespace='jupyter',
             create_namespace=False,
             values=load_yaml_replace_var_local(source_dir+'/app_resources/jupyter-values.yaml', 

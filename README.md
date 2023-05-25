@@ -68,7 +68,7 @@ Two ways to deploy:
   |   Region  |   Launch Template |
   |  ---------------------------   |   -----------------------  |
   |  ---------------------------   |   -----------------------  |
-  **Choose Your Region**| [![Deploy to AWS](source/images/00-deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/quickcreate?stackName=SparkOnEKS&templateURL=https://solutions-reference.s3.amazonaws.com/sql-based-etl-with-apache-spark-on-amazon-eks/v1.0.0/sql-based-etl-with-apache-spark-on-amazon-eks.template) 
+  **Choose Your Region**| [![Deploy to AWS](source/images/00-deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/quickcreate?stackName=SparkOnEKS&templateURL=https://blogpost-sparkoneks-us-east-1.s3.amazonaws.com/sql-based-etl/aws-solution-v2/sql-based-etl-with-apache-spark-on-amazon-eks.template) 
 
 * Option1: Deploy with default (recommended). The default region is **us-east-1**. 
 To launch the solution in a different AWS Region, use the Region selector in the console navigation bar. 

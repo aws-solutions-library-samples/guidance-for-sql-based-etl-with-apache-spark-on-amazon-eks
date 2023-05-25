@@ -38,6 +38,7 @@ class S3AppCodeConst(Construct):
             encryption=s3.BucketEncryption.KMS_MANAGED,
             removal_policy=RemovalPolicy.RETAIN,
             access_control = s3.BucketAccessControl.LOG_DELIVERY_WRITE,
+            object_ownership=s3.ObjectOwnership.OBJECT_WRITER,
             versioned=True #required by codebuild
         )
 

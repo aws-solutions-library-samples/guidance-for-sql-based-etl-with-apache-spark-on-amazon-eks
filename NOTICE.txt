@@ -20,10 +20,10 @@ THIRD PARTY COMPONENTS
 This software includes third party software subject to the following copyrights:
 
 Arc -- v3.10.0_spark_3.0.3_scala_2.12_hadoop_3.2.0_1.0.0 -- https://arc.tripl.ai/ -- MIT License
-Arc Jupyter - v3.13.1_scala_2.12_hadoop_3.2.0_1.4.0 -- https://github.com/tripl-ai/arc-jupyter --  MIT License
+Arc Jupyter - v3.15.1_scala_2.12_hadoop_3.3.2_1.2.0 -- https://github.com/tripl-ai/arc-jupyter --  MIT License
 argo-workflows -- v3.0.2 -- https://github.com/argoproj/argo-workflows -- Apache-2.0
-JupyterHub -- v1.3.0 -- https://github.com/jupyterhub/jupyterhub -- revised BSD license
-aws-cdk -- v2.12.0 -- https://github.com/aws/aws-cdk -- Apache-2.0
+JupyterHub -- v1.5.0 -- https://github.com/jupyterhub/jupyterhub -- revised BSD license
+aws-cdk -- v2.67.0 -- https://github.com/aws/aws-cdk -- Apache-2.0
 k8s-cluster-autoscaler -- v1.19.1 -- https://github.com/kubernetes/autoscaler -- Apache-2.0
 amazon-cloudwatch-container-insights -- latest version -- https://github.com/aws-samples/amazon-cloudwatch-container-insights -- MIT-0
 aws-load-balancer-controller -- v2.2.0 -- https://github.com/aws/eks-charts/ -- Apache-2.0
