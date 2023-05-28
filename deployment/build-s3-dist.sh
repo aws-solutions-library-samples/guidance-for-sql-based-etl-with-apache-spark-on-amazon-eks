@@ -68,8 +68,8 @@ echo "--------------------------------------------------------------------------
 echo "cd $template_dir/deployment/cdk-solution-helper"
 cd $template_dir/deployment/cdk-solution-helper
 echo "npm install"
-npm i --package-lock-only
-npm audit fix
+# npm i --package-lock-only
+# npm audit fix
 npm install
 
 cd $template_dir
@@ -112,8 +112,8 @@ echo "--------------------------------------------------------------------------
 
 # # Install the global aws-cdk package
 echo "npm install -g aws-cdk@$cdk_version"
-npm i --package-lock-only
-npm audit fix
+# npm i --package-lock-only
+# npm audit fix
 npm install aws-cdk@$cdk_version
 
 # Run 'cdk synth' to generate raw solution outputs
@@ -208,7 +208,7 @@ for d in `find . -mindepth 1 -maxdepth 1 -type d`; do
         echo "Initiating virtual environment"
         python3 -m venv $venv_folder
         source $venv_folder/bin/activate
-        pip3 install --upgrade -q $source_dir --target $venv_folder/lib/python3.*/site-packages
+        pip3 install --upgrade pip -q $source_dir --target $venv_folder/lib/python3.*/site-packages
         echo "package python artifact"
         cd $venv_folder/lib/python3.*/site-packages
         zip -qr9 $staging_dist_dir/$fname.zip .  -x "aws_cdk/*"
@@ -222,13 +222,14 @@ for d in `find . -mindepth 1 -maxdepth 1 -type d`; do
         echo "This is Node runtime"
         echo "===================================="
         echo "Clean and rebuild artifacts"
-        npm i --package-lock-only
-        npm audit fix --force
+        echo "copy package.json and package-lock.json files"
+        # npm audit fix --force
+        cp -rf $template_dir/deployment/cdk-solution-helper/*.json .
         npm run
         npm ci
         if [ "$?" = "1" ]; then
 	        echo "ERROR: Seems like package-lock.json does not exists or is out of sync with package.josn. Trying npm install instead" 1>&2
-            npm install
+            npm install --package-lock
         fi
         # Zip the artifact
         echo "zip -r $staging_dist_dir/$fname"
