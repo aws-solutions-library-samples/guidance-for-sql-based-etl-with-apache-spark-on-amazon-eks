@@ -82,7 +82,7 @@ You can customize the solution, such as remove a Jupyter timeout setting, then g
 export BUCKET_NAME_PREFIX=<my-bucket-name> # bucket where the customized CFN templates will reside
 export AWS_REGION=<your-region>
 export SOLUTION_NAME=sql-based-etl
-export VERSION=v1.0.0 # version number for the customized code
+export VERSION=aws-solution-v2 # version number for the customized code
 
 ./deployment/build-s3-dist.sh $BUCKET_NAME_PREFIX $SOLUTION_NAME $VERSION
 
