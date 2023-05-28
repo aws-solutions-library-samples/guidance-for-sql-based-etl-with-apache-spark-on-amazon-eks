@@ -28,7 +28,6 @@ eks_stack = SparkOnEksStack(app, 'sql-based-etl-with-apache-spark-on-amazon-eks'
 cf_nested_stack = NestedStack(eks_stack,'CreateCloudFront', eks_stack.code_bucket, eks_stack.argo_url, eks_stack.jhub_url)
 Tags.of(eks_stack).add('project', 'sqlbasedetl')
 Tags.of(cf_nested_stack).add('project', 'sqlbasedetl')
-
 # Deployment Output
 CfnOutput(eks_stack,'CODE_BUCKET', value=eks_stack.code_bucket)
 CfnOutput(eks_stack,'ARGO_URL', value='https://'+ cf_nested_stack.argo_cf)

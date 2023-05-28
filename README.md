@@ -68,20 +68,18 @@ Two ways to deploy:
   |   Region  |   Launch Template |
   |  ---------------------------   |   -----------------------  |
   |  ---------------------------   |   -----------------------  |
-  **Choose Your Region**| [![Deploy to AWS](source/images/00-deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/quickcreate?stackName=SparkOnEKS&templateURL=https://blogpost-sparkoneks-us-east-1.s3.amazonaws.com/sql-based-etl/aws-solution-v2/sql-based-etl-with-apache-spark-on-amazon-eks.template) 
+  **us-east-1**| [![Deploy to AWS](source/images/00-deploy-to-aws.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/quickcreate?stackName=SparkOnEKS&templateURL=https://blogpost-sparkoneks-us-east-1.s3.amazonaws.com/sql-based-etl/aws-solution-v2/sql-based-etl-with-apache-spark-on-amazon-eks.template) 
 
 * Option1: Deploy with default (recommended). The default region is **us-east-1**. 
-To launch the solution in a different AWS Region, use the Region selector in the console navigation bar. 
+To launch the solution in a different AWS Region, deploy the solution by following the `Customization` section. 
 
-* Option2: Fill in the parameter `jhubuser` if you want to setup a customized username for Jupyter login. 
-
-* Option3: To ETL your own data, input the parameter `datalakebucket` by your S3 bucket. 
+* Option2: To ETL your own data, input the parameter `datalakebucket` by your S3 bucket. 
 `NOTE: the S3 bucket must be in the same region as the deployment region.`
 
 ### Customization
 You can customize the solution, such as remove a Jupyter timeout setting, then generate the CFN in your region: 
 ```bash
-export BUCKET_NAME_PREFIX=<my-bucket-name> # bucket where customized code will reside
+export BUCKET_NAME_PREFIX=<my-bucket-name> # bucket where the customized CFN templates will reside
 export AWS_REGION=<your-region>
 export SOLUTION_NAME=sql-based-etl
 export VERSION=v1.0.0 # version number for the customized code
@@ -131,18 +129,12 @@ pip install -e source
 cd source
 cdk deploy
 ```
-* Option2: Customize Jupyter login
-To follow the best practice in security, a service account in EKS will be created dynamically, based on your deployment parameter. An IAM role with the least privilege will be assigned to the new service account. 
-```bash
-cd source
-cdk deploy --parameters jhubuser=<random_login_name>
-```
-* Option3: If ETL your own data, use the parameter datalakebucket
+* Option2: If ETL your own data, use the parameter datalakebucket
 By default, the deployment creates a new S3 bucket containing sample data and ETL job config. 
 If use your own data to build an ETL, replace the `<existing_datalake_bucket>` to your S3 bucket. `NOTE: your bucket must be in the same region as the deployment region.`
 ```bash
 cd source
-cdk deploy --parameters jhubuser=<random_login_name> --parameters datalakebucket=<existing_datalake_bucket>
+cdk deploy --parameters datalakebucket=<existing_datalake_bucket>
 ```
 
 [*^ back to top*](#Table-of-Contents)

@@ -21,13 +21,13 @@ hub:
       # setup timeout
       c.JupyterHub.cookie_max_age_days = 0.0105
       c.Authenticator.refresh_pre_spawn = True
-      c.JupyterHub.services = [
-        {
-            "name": "idle_culler",
-            "admin": True,
-            "command": [sys.executable, "-m", "jupyterhub_idle_culler", "--timeout=1800"],
-        }
-      ]
+      # c.JupyterHub.services = [
+      #   {
+      #       "name": "idle_culler",
+      #       "admin": True,
+      #       "command": [sys.executable, "-m", "jupyterhub_idle_culler", "--timeout=1800"],
+      #   }
+      # ]
 
   extraEnv:
     - name: LOGIN
@@ -115,6 +115,7 @@ scheduling:
   userScheduler:
     enabled: true
     replicas: 1
-
+cull:
+  timeout: 1800
 # debug:
 #   enabled: true      

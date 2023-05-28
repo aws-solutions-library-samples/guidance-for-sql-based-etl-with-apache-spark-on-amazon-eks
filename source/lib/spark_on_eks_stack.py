@@ -97,7 +97,7 @@ class SparkOnEksStack(Stack):
         jhub_install= eks_cluster.my_cluster.add_helm_chart('JHubChart',
             chart='jupyterhub',
             repository='https://jupyterhub.github.io/helm-chart',
-            release='jupyterhub',
+            release='jhub',
             version='1.2.0',
             namespace='jupyter',
             create_namespace=False,
