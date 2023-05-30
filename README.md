@@ -40,10 +40,11 @@ this capability, please see the [implementation guide](https://docs.aws.amazon.c
 
 ## Prerequisites 
 1. Python 3.6 or later. Download Python [here](https://www.python.org/downloads/).
-2. AWS CLI version 1.
+2. kubectl 1.24.13 or later. See the installation [here](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)
+3. AWS CLI version 1.
   Windows: [MSI installer](https://docs.aws.amazon.com/cli/latest/userguide/install-windows.html#install-msi-on-windows)
   Linux, macOS or Unix: [Bundled installer](https://docs.aws.amazon.com/cli/latest/userguide/install-macos.html#install-macosos-bundled)
-3. The AWS CLI can communicate with services in your deployment account. Otherwise, run the following script to setup your AWS account access from a command line tool.
+4. The AWS CLI can communicate with services in your deployment account. Otherwise, run the following script to setup your AWS account access from a command line tool.
 ```bash
 aws configure
 ```
