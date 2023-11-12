@@ -15,7 +15,7 @@ from aws_cdk import (aws_iam as iam)
 from constructs import Construct
 from aws_cdk.aws_eks import ICluster, KubernetesManifest
 from lib.util.manifest_reader import load_yaml_replace_var_local
-import lib.util.override_rule as scan
+# import lib.util.override_rule as scan
 import os
 
 class SparkOnEksSAConst(Construct):
@@ -116,6 +116,6 @@ class SparkOnEksSAConst(Construct):
 
 
         # Override Cfn Nag warning W12: IAM policy should not allow * resource
-        scan.suppress_cfnnag_rule('W12', 'by default the etl_sa role has * resource', self._etl_sa.role.node.find_child('DefaultPolicy').node.default_child)
-        scan.suppress_cfnnag_rule('W12', 'by default the role spark_sa has * resource', self._spark_sa.role.node.find_child('DefaultPolicy').node.default_child)
-        scan.suppress_cfnnag_rule('W12', 'by default the role jupyter_sa has * resource', self._jupyter_sa.role.node.find_child('DefaultPolicy').node.default_child)
+        # scan.suppress_cfnnag_rule('W12', 'by default the etl_sa role has * resource', self._etl_sa.role.node.find_child('DefaultPolicy').node.default_child)
+        # scan.suppress_cfnnag_rule('W12', 'by default the role spark_sa has * resource', self._spark_sa.role.node.find_child('DefaultPolicy').node.default_child)
+        # scan.suppress_cfnnag_rule('W12', 'by default the role jupyter_sa has * resource', self._jupyter_sa.role.node.find_child('DefaultPolicy').node.default_child)

@@ -27,7 +27,7 @@
 #  - version-code: version of the package
 
 # Important: CDK global version number
-cdk_version===2.67.0
+cdk_version===2.105.0
 
 # Check to see if the required parameters have been provided:
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
@@ -82,19 +82,19 @@ echo "--------------------------------------------------------------------------
 echo "[Packing] solution_helper lambda function"
 echo "------------------------------------------------------------------------------"
 
-echo "cd $source_dir/lib/solution_helper"
-cd $source_dir/lib/solution_helper
-echo "pip install -r requirements.txt --target ../package"
-pip install -r requirements.txt --target ../package
-cd $source_dir/lib/package || exit 1
-echo "zip -q -r9 $app_code_dir/solution_helper.zip ."
-zip -q -r9 $app_code_dir/solution_helper.zip .
-echo "cd $source_dir/lib/solution_helper" || exit 1
-cd $source_dir/lib/solution_helper
-echo "zip -g -r $app_code_dir/solution_helper.zip lambda_function.py"
-zip -g -r $app_code_dir/solution_helper.zip lambda_function.py
-echo "rm -rf $source_dir/lib/package"
-rm -rf $source_dir/lib/package
+# echo "cd $source_dir/lib/solution_helper"
+# cd $source_dir/lib/solution_helper
+# echo "pip install -r requirements.txt --target ../package"
+# pip install -r requirements.txt --target ../package
+# cd $source_dir/lib/package || exit 1
+# echo "zip -q -r9 $app_code_dir/solution_helper.zip ."
+# zip -q -r9 $app_code_dir/solution_helper.zip .
+# echo "cd $source_dir/lib/solution_helper" || exit 1
+# cd $source_dir/lib/solution_helper
+# echo "zip -g -r $app_code_dir/solution_helper.zip lambda_function.py"
+# zip -g -r $app_code_dir/solution_helper.zip lambda_function.py
+# echo "rm -rf $source_dir/lib/package"
+# rm -rf $source_dir/lib/package
 
 echo "------------------------------------------------------------------------------"
 echo "[Packing] ecr image build"

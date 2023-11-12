@@ -13,7 +13,7 @@
 
 from aws_cdk import (Tags, aws_ec2 as ec2, aws_s3 as s3)
 from constructs import Construct
-import lib.util.override_rule as scan 
+# import lib.util.override_rule as scan 
 
 class NetworkSgConst(Construct):
 
@@ -31,11 +31,11 @@ class NetworkSgConst(Construct):
         self._vpc = ec2.Vpc(self, 'eksVpc',max_azs=2, nat_gateways=1)
         Tags.of(self._vpc).add('Name', eksname + 'EksVpc')
 
-        self._log_bucket=s3.Bucket.from_bucket_name(self,'vpc_logbucket', codebucket)
-        self._vpc.add_flow_log("FlowLogCloudWatch",
-            destination=ec2.FlowLogDestination.to_s3(self._log_bucket,'vpcRejectlog/'),
-            traffic_type=ec2.FlowLogTrafficType.REJECT
-        )
+        # self._log_bucket=s3.Bucket.from_bucket_name(self,'vpc_logbucket', codebucket)
+        # self._vpc.add_flow_log("FlowLogCloudWatch",
+        #     destination=ec2.FlowLogDestination.to_s3(self._log_bucket,'vpcRejectlog/'),
+        #     traffic_type=ec2.FlowLogTrafficType.REJECT
+        # )
 
         # VPC endpoint security group
         self._vpc_endpoint_sg = ec2.SecurityGroup(self,'EndpointSg',
@@ -58,18 +58,18 @@ class NetworkSgConst(Construct):
         
 
         # Override Cfn_Nag rule for AWS Solution CICD validation
-        for subnet in self._vpc.public_subnets:
-            scan.suppress_cfnnag_rule('W33','a public facing ALB is required and ingress from the internet should be permitted.',subnet.node.default_child)
+        # for subnet in self._vpc.public_subnets:
+        #     scan.suppress_cfnnag_rule('W33','a public facing ALB is required and ingress from the internet should be permitted.',subnet.node.default_child)
 
-        self._vpc_endpoint_sg.node.default_child.add_metadata('cfn_nag',{
-            "rules_to_suppress": [
-                {
-                    "id": "W40",
-                    "reason": "Egress IP Protocol of -1 is default and generally considered OK"
-                },
-                {
-                    "id": "W5",
-                    "reason": "Security Groups with cidr open considered OK"
-                }
-            ]
-        })
+        # self._vpc_endpoint_sg.node.default_child.add_metadata('cfn_nag',{
+        #     "rules_to_suppress": [
+        #         {
+        #             "id": "W40",
+        #             "reason": "Egress IP Protocol of -1 is default and generally considered OK"
+        #         },
+        #         {
+        #             "id": "W5",
+        #             "reason": "Security Groups with cidr open considered OK"
+        #         }
+        #     ]
+        # })

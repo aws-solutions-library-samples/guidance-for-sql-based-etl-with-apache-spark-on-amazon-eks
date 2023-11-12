@@ -51,15 +51,15 @@ class S3AppCodeConst(Construct):
         self.bucket_name = self.artifact_bucket.bucket_name
 
         # # Override Cfn_Nag rule for S3 access logging
-        self.artifact_bucket.node.default_child.add_metadata('cfn_nag',{
-            "rules_to_suppress": [
-                {
-                    "id": "W35",
-                    "reason": "bucket access log stops bucket removal, disable for now"
-                },
-                {
-                    "id": "W51",
-                    "reason": "bucket access is controled by IAM level"
-                }
-            ]
-        })
+        # self.artifact_bucket.node.default_child.add_metadata('cfn_nag',{
+        #     "rules_to_suppress": [
+        #         {
+        #             "id": "W35",
+        #             "reason": "bucket access log stops bucket removal, disable for now"
+        #         },
+        #         {
+        #             "id": "W51",
+        #             "reason": "bucket access is controled by IAM level"
+        #         }
+        #     ]
+        # })

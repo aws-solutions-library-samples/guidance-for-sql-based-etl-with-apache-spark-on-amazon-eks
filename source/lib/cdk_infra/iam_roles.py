@@ -14,7 +14,7 @@
 import typing
 from aws_cdk import (Tags, aws_iam as iam)
 from constructs import Construct
-import lib.util.override_rule as scan
+# import lib.util.override_rule as scan
 
 class IamConst(Construct):
 
@@ -63,5 +63,5 @@ class IamConst(Construct):
 
 
         # Override Cfn Nag rule
-        scan.suppress_cfnnag_rule('W12', 'by default the role has * resource', self._clusterAdminRole.node.find_child('DefaultPolicy').node.default_child)
+        # scan.suppress_cfnnag_rule('W12', 'by default the role has * resource', self._clusterAdminRole.node.find_child('DefaultPolicy').node.default_child)
         

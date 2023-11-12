@@ -21,7 +21,7 @@ from aws_cdk import (
     aws_ecr as ecr,
 ) 
 from constructs import Construct
-import lib.util.override_rule as scan
+# import lib.util.override_rule as scan
 
 class DockerPipelineConstruct(Construct):
 
@@ -86,17 +86,17 @@ class DockerPipelineConstruct(Construct):
         )
 
         # Override Cfn Nag warning W12: IAM policy should not allow * resource
-        scan.suppress_cfnnag_rule('W12', 'the role for action of ecr:GetAuthorizationToken requires * resource', image_builder.role.node.find_child('DefaultPolicy').node.default_child)
+        # scan.suppress_cfnnag_rule('W12', 'the role for action of ecr:GetAuthorizationToken requires * resource', image_builder.role.node.find_child('DefaultPolicy').node.default_child)
 
-        image_builder.role.node.find_child('DefaultPolicy').node.default_child.add_metadata('cfn_nag',{
-            "rules_to_suppress": [
-                {
-                    "id": "W12",
-                    "reason": "the role for action of ecr:GetAuthorizationToken requires * resource"
-                },
-                {
-                    "id": "W76",
-                    "reason": "the IAM policy is complex, need to be higher than 25"
-                }
-            ]
-        })
+        # image_builder.role.node.find_child('DefaultPolicy').node.default_child.add_metadata('cfn_nag',{
+        #     "rules_to_suppress": [
+        #         {
+        #             "id": "W12",
+        #             "reason": "the role for action of ecr:GetAuthorizationToken requires * resource"
+        #         },
+        #         {
+        #             "id": "W76",
+        #             "reason": "the IAM policy is complex, need to be higher than 25"
+        #         }
+        #     ]
+        # })

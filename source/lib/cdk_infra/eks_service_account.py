@@ -16,7 +16,7 @@ from constructs import Construct
 from aws_cdk.aws_secretsmanager import ISecret
 from aws_cdk.aws_eks import ICluster
 from lib.util.manifest_reader import *
-import lib.util.override_rule as scan
+# import lib.util.override_rule as scan
 import os
 
 class EksSAConst(Construct):
@@ -65,6 +65,6 @@ class EksSAConst(Construct):
 # //***********************************************************************************************//   
         
         # Override Cfn Nag warning W12: IAM policy should not allow * resource
-        scan.suppress_cfnnag_rule('W12', 'by default the role scaler_sa has * resource', self._scaler_sa.role.node.find_child('DefaultPolicy').node.default_child)
-        scan.suppress_cfnnag_rule('W12', 'by default the role secrets_sa has * resource', self._secrets_sa.role.node.find_child('DefaultPolicy').node.default_child)
-        scan.suppress_iam_cfnnag_rule(self._alb_sa.role.node.find_child('DefaultPolicy').node.default_child)
+        # scan.suppress_cfnnag_rule('W12', 'by default the role scaler_sa has * resource', self._scaler_sa.role.node.find_child('DefaultPolicy').node.default_child)
+        # scan.suppress_cfnnag_rule('W12', 'by default the role secrets_sa has * resource', self._secrets_sa.role.node.find_child('DefaultPolicy').node.default_child)
+        # scan.suppress_iam_cfnnag_rule(self._alb_sa.role.node.find_child('DefaultPolicy').node.default_child)

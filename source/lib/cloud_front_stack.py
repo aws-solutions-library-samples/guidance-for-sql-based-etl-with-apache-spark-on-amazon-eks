@@ -19,7 +19,7 @@ from aws_cdk import (
     aws_s3 as s3
 )
 from constructs import Construct
-import lib.util.override_rule as scan
+# import lib.util.override_rule as scan
 
 class NestedStack(NestedStack):
 
@@ -71,7 +71,7 @@ def add_distribution(scope: Construct, id: str, alb_dns_name: str, port: int, lo
         log_bucket=logbucket
     )
     # Override Cfn_Nag rule for Cloudfront TLS-1.2 (https://github.com/stelligent/cfn_nag/issues/384)
-    scan.suppress_cfnnag_rule('W70','the distribution uses CloudFront domain name and automatically sets the policy to TLSv1',dist.node.default_child)
+    # scan.suppress_cfnnag_rule('W70','the distribution uses CloudFront domain name and automatically sets the policy to TLSv1',dist.node.default_child)
 
     return dist.distribution_domain_name
 
