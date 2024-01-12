@@ -25,9 +25,9 @@ class S3AppCodeConst(Construct):
     def artifact_bucket(self):
         return self._artifact_bucket   
     
-    @property
-    def s3_deploy_contrust(self):
-        return self.deploy
+    # @property
+    # def s3_deploy_contrust(self):
+    #     return self.deploy
 
     def __init__(self,scope: Construct, id: str, **kwargs,) -> None:
         super().__init__(scope, id, **kwargs)
