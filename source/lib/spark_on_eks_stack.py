@@ -130,7 +130,7 @@ class SparkOnEksStack(Stack):
             chart='argo-workflows',
             repository='https://argoproj.github.io/argo-helm',
             release='argo',
-            version='0.1.4',
+            version='0.40.7',
             namespace='argo',
             create_namespace=True,
             values=load_yaml_local(source_dir+'/app_resources/argo-values.yaml')

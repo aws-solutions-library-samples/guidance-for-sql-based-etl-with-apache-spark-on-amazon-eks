@@ -32,7 +32,7 @@ echo "==========================================================================
 echo " Installing argoCLI tool on Mac ..."
 echo " Check out https://github.com/argoproj/argo-workflows/releases for other OS type installation."
 echo "================================================================================================"
-VERSION=v3.0.2
+VERSION=v3.5.4
 sudo curl -sLO https://github.com/argoproj/argo-workflows/releases/download/${VERSION}/argo-darwin-amd64.gz && gunzip argo-darwin-amd64.gz
 chmod +x argo-darwin-amd64 && sudo mv ./argo-darwin-amd64 /usr/local/bin/argo
 echo "Installed argoCLI version: "

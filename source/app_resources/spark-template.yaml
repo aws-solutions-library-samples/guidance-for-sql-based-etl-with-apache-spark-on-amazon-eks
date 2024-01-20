@@ -5,7 +5,7 @@ metadata:
   namespace: spark
 spec:
   templates:
-  - name: smallJob
+  - name: smalljob
     retryStrategy:
       limit: 3
       retryPolicy: "Always"
@@ -92,7 +92,7 @@ spec:
         --ETL_CONF_EPOCH=$(date '+%s') --ETL_CONF_CURRENT_TIMESTAMP="'$(date -u '+%Y-%m-%d %H:%M:%S')'" \
         {{inputs.parameters.parameters}}
 
-  - name: mediumJob
+  - name: mediumjob
     retryStrategy:
       limit: 3
       retryPolicy: "Always"
@@ -179,7 +179,7 @@ spec:
         --ETL_CONF_EPOCH=$(date '+%s') --ETL_CONF_CURRENT_TIMESTAMP="'$(date -u '+%Y-%m-%d %H:%M:%S')'" \
         {{inputs.parameters.parameters}}
   
-  - name: largeJob
+  - name: largejob
     retryStrategy:
       limit: 3
       retryPolicy: "Always"
@@ -266,7 +266,7 @@ spec:
         --ETL_CONF_EPOCH=$(date '+%s') --ETL_CONF_CURRENT_TIMESTAMP="'$(date -u '+%Y-%m-%d %H:%M:%S')'" \
         {{inputs.parameters.parameters}}
           
-  - name: sparkLocal
+  - name: sparklocal
     inputs:
       retryStrategy:
         limit: 3
