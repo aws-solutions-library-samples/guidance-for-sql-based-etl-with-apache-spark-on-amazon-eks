@@ -390,11 +390,12 @@ If you are concerned about the job performance, simply fit it into a single AZ b
 
 [*^ back to top*](#Table-of-Contents)
 ## Clean up
-Run the clean-up script with your CloudFormation stack name. The default name is SparkOnEKS. If you see the error "(ResourceInUse) when calling the DeleteTargetGroup operation", simply run the script again.
+Navigate to the source code root directory, and run the clean-up script with your CloudFormation stack name. The default value is 'SparkOnEKS'.If an error "(ResourceInUse) when calling the DeleteTargetGroup operation" occurs, simply run the script again.
 ```bash
 cd sql-based-etl-with-apache-spark-on-amazon-eks
 ./deployment/delete_all.sh <OPTIONAL:stack_name>
 ```
+
 Go to the [CloudFormation console](https://console.aws.amazon.com/cloudformation/home?region=us-east-1), manually delete the remaining resources if needed.
 
 [*^ back to top*](#Table-of-Contents)
