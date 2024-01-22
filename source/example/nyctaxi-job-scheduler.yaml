@@ -16,7 +16,7 @@ spec:
         - name: step1-query
           templateRef:
             name: spark-template
-            template: sparkLocal 
+            template: sparklocal 
           arguments:
             parameters:
             - name: jobId
@@ -25,5 +25,8 @@ spec:
               value: "project=sqlbasedetl owner=myowner costcenter=66666" 
             - name: configUri
               value: https://raw.githubusercontent.com/tripl-ai/arc-starter/master/examples/kubernetes/nyctaxi.ipynb
+            - name: image
+              value: ghcr.io/tripl-ai/arc:arc_3.11.1_spark_3.1.2_scala_2.12_hadoop_3.2.0_1.0.0  
             - name: parameters
-              value: "--ETL_CONF_DATA_URL=s3a://nyc-tlc/trip*data --ETL_CONF_JOB_URL=https://raw.githubusercontent.com/tripl-ai/arc-starter/master/examples/kubernetes"
+              value: "--ETL_CONF_DATA_URL=s3a://nyc-tlc/csv_backup \
+              --ETL_CONF_JOB_URL=https://raw.githubusercontent.com/tripl-ai/arc-starter/master/examples/kubernetes"

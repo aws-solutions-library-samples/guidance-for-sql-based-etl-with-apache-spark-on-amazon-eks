@@ -17,7 +17,7 @@ spec:
         - name: initial-load
           templateRef:
             name: spark-template
-            template: smallJob
+            template: smalljob
           arguments:
             parameters:
             - name: jobId
@@ -31,7 +31,7 @@ spec:
         - name: delta-load
           templateRef:
             name: spark-template
-            template: smallJob
+            template: smalljob
           arguments:
             parameters:
             - name: jobId
@@ -46,7 +46,7 @@ spec:
           dependencies: [initial-load, delta-load]
           templateRef:
             name: spark-template
-            template: smallJob
+            template: smalljob
           arguments:
             parameters:
             - name: jobId
