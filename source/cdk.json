@@ -5,6 +5,7 @@
     "solution_id": "SO0141",
     "solution_name": "sql-based-etl-with-apache-spark-on-amazon-eks",
     "version": "v2.0.0",
-    "@aws-cdk/core:stackRelativeExports": "true"
+    "@aws-cdk/core:stackRelativeExports": true,
+    "@aws-cdk/customresources:installLatestAwsSdkDefault": false
   }
 }

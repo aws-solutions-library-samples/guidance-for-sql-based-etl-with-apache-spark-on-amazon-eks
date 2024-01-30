@@ -35,7 +35,8 @@ class DockerPipelineConstruct(Construct):
         # 1. Create ECR repositories
         self.ecr_repo=ecr.Repository(self,'ECRRepo',
             image_scan_on_push=True,
-            removal_policy=RemovalPolicy.DESTROY
+            removal_policy=RemovalPolicy.DESTROY,
+            auto_delete_images=True
         )
         # 2. Setup deployment CI/CD to deploy docker image to ECR
         pipeline = codepipeline.Pipeline(self, "Pipeline",

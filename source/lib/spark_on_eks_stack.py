@@ -118,7 +118,8 @@ class SparkOnEksStack(Stack):
                 fields= {
                     "{{MY_SA}}": app_security.jupyter_sa,
                     "{{REGION}}": Aws.REGION, 
-                    "{{SECRET_NAME}}": name_no_suffix
+                    "{{SECRET_NAME}}": name_no_suffix,
+                    "{{INBOUND_SG}}": network_sg.alb_jhub_sg.security_group_id
                 }, 
                 multi_resource=True)
         )
@@ -133,7 +134,10 @@ class SparkOnEksStack(Stack):
             version='0.40.7',
             namespace='argo',
             create_namespace=True,
-            values=load_yaml_local(source_dir+'/app_resources/argo-values.yaml')
+            values=load_yaml_replace_var_local(source_dir+'/app_resources/argo-values.yaml',
+                fields= {
+                    "{{INBOUND_SG}}": network_sg.alb_argo_sg.security_group_id
+                })
         )
         argo_install.node.add_dependency(config_hub)
         # Create argo workflow template for Spark with T-shirt size

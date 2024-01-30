@@ -20,3 +20,5 @@ server:
       alb.ingress.kubernetes.io/target-type: ip
       alb.ingress.kubernetes.io/success-codes: 200,301,302
       alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 2746}]'
+      alb.ingress.kubernetes.io/manage-backend-security-group-rules: "true"
+      alb.ingress.kubernetes.io/security-groups: {{INBOUND_SG}}

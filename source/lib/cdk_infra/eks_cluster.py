@@ -11,7 +11,7 @@
 # and limitations under the License.  																				#                                                                              #
 ######################################################################################################################
 
-from aws_cdk import (aws_eks as eks,aws_ec2 as ec2)
+from aws_cdk import (aws_eks as eks,aws_ec2 as ec2, RemovalPolicy)
 from aws_cdk.aws_iam import IRole
 from constructs import Construct
 from aws_cdk.lambda_layer_kubectl_v27 import KubectlV27Layer
@@ -49,7 +49,6 @@ class EksConst(Construct):
             subnets = ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS,one_per_az=True),
             tags = {'Name':'OnDemand-'+eksname,'k8s.io/cluster-autoscaler/enabled': 'true', 'k8s.io/cluster-autoscaler/'+eksname: 'owned'}
         )  
-    
 
         # 3. Add Spot managed NodeGroup to EKS (Run Spark exectutor on spot)
         self._my_cluster.add_nodegroup_capacity('spot-mn',
