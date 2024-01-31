@@ -46,8 +46,8 @@ kubectl get svc
 # 4. get Jupyter Hub login
 LOGIN_URI=$(aws cloudformation describe-stacks --stack-name $stack_name --region $region \
 --query "Stacks[0].Outputs[?OutputKey=='JUPYTERURL'].OutputValue" --output text)
-SEC_ID=$(aws secretsmanager list-secrets --query "SecretList[?not_null(Tags[?Value=='$stack_name'])].Name" --output text)
-LOGIN=$(aws secretsmanager get-secret-value --secret-id $SEC_ID --query SecretString --output text)
+SEC_ID=$(aws secretsmanager list-secrets --region $region --query "SecretList[?not_null(Tags[?Value=='$stack_name'])].Name" --output text)
+LOGIN=$(aws secretsmanager get-secret-value --region $region --secret-id $SEC_ID --query SecretString --output text)
 echo -e "\n=============================== JupyterHub Login =============================================="
 echo -e "\nJUPYTER_URL: $LOGIN_URI"
 echo "LOGIN: $LOGIN" 
