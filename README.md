@@ -354,8 +354,11 @@ See the demonstration simulating a Spot interruption scenario:
 # replace the placeholder
 exec_name=$(kubectl get pod -n spark | grep "exec-1" | awk '{print $1}')
 kubectl delete -n spark pod $exec_name --force
-# has it come back with a different number suffix? 
+# check the log, has it come back with a different number suffix? 
+kubectl logs word-count-driver -n spark
 ```
+![](source/images/executor_interruption_test.png)
+
 [*^ back to top*](#Table-of-Contents)
 #### Check Spot instance usage and cost savings
 Navigate to the [Spot Requests console](https://console.aws.amazon.com/ec2sp/v2/){:target="_blank"} -> click on the "Saving Summary" button. It will show you how much running cost you have just saved.
