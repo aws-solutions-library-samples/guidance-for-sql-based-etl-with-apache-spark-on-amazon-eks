@@ -11,7 +11,7 @@ spec:
   imagePullPolicy: Always
   mainApplicationFile: "s3a://$(BUCKET_PARAM)/app_code/job/wordcount.py"
   arguments: ["s3a://nyc-tlc/csv_backup/yellow_tripdata*.csv","s3a://$(BUCKET_PARAM)/app_code/output/native"]
-  sparkVersion: "3.0.3"
+  sparkVersion: "3.1.2"
   sparkConf:
     "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
     "spark.hadoop.fs.s3a.aws.credentials.provider": "com.amazonaws.auth.WebIdentityTokenCredentialsProvider"

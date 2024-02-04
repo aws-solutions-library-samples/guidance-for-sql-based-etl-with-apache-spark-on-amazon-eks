@@ -15,20 +15,22 @@ code_bucket=$(aws cloudformation describe-stacks --stack-name $stack_name --regi
 if ! [ -z "$code_bucket" ] 
 then	
 	if ! [ -z $(aws s3api list-buckets --region $region --query 'Buckets[?Name==`'$code_bucket'`].Name' --output text) ]; then
-		echo "Delete logs from S3"
-		aws s3 rm s3://${code_bucket}/vpcRejectlog/
-		echo "Delete athena query result from S3"
-		aws s3 rm s3://${code_bucket}/athena-query-result/
+		echo "Delete S3 objects"
+		aws s3api list-object-versions --bucket $code_bucket --region $region --query "Versions[].Key" --output json | jq 'unique' | jq -r '.[]' | while read key; do
+		   echo "deleting versions of $key"
+		   aws s3api list-object-versions --bucket $code_bucket --region $region --prefix $key --query "Versions[].VersionId" --output json | jq 'unique' | jq -r '.[]' | while read version; do
+		     echo "deleting $version"
+		     aws s3api delete-object --bucket $code_bucket --key $key --version-id $version --region $region
+		   done
+		done   
+		aws s3 rb s3://${code_bucket} --force
 	fi	
 fi
 # delete ecr
 repo_name=$(aws ecr describe-repositories --region $region --query 'repositories[?starts_with(repositoryName,`'$lower_stack_name'`)==`true`]'.repositoryName --output text)
-if ! [ -z "$repo_name" ]; then
-	repo_exist=$(aws ecr describe-repositories --region $region --repository-names ${repo_name} 2>&1)
-	if ! [ -z "$repo_exist" ]; then	
-    	echo "Delete Arc docker image from ECR"
-		aws ecr delete-repository --region $region --repository-name $repo_name --force
-  	fi
+if ! [ -z "${repo_name}" ]; then
+	echo "Delete Arc docker image from ECR"
+	aws ecr delete-repository --region $region --repository-name $repo_name --force
 fi
 # delete glue tables
 tbl1=$(aws glue get-tables --region $region --database-name 'default' --query 'TableList[?starts_with(Name,`contact_snapshot`)==`true`]'.Name --output text)
@@ -36,7 +38,7 @@ tbl2=$(aws glue get-tables --region $region --database-name 'default' --query 'T
 if ! [ -z "$tbl1" ] 
 then
 	echo "Drop a Delta Lake table default.contact_snapshot"
-	aws athena start-query-execution --region $region -query-string "DROP TABLE default.contact_snapshot" --result-configuration OutputLocation=s3://$code_bucket/athena-query-result
+	aws athena start-query-execution --region $region --query-string "DROP TABLE default.contact_snapshot" --result-configuration OutputLocation=s3://$code_bucket/athena-query-result
 fi
 if ! [ -z "$tbl2" ] 
 then

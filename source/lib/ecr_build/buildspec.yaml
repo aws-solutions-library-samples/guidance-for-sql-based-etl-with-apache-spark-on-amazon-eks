@@ -1,5 +1,15 @@
 version: 0.2
 phases:
+  install:
+    commands:
+      - export BUILDX_VERSION=$(curl --silent "https://api.github.com/repos/docker/buildx/releases/latest" |jq -r .tag_name)
+      - curl -JLO "https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.linux-amd64"
+      - mkdir -p ~/.docker/cli-plugins
+      - mv "buildx-$BUILDX_VERSION.linux-amd64" ~/.docker/cli-plugins/docker-buildx
+      - chmod +x ~/.docker/cli-plugins/docker-buildx
+      # - docker run --privileged --rm tonistiigi/binfmt --install arm64
+      # To install all the supported platforms:
+      - docker run --privileged --rm tonistiigi/binfmt --install all
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
@@ -12,11 +22,13 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:latest .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
-  post_build:
-    commands:
-      - echo Build completed on `date`
-      - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - docker buildx create --use --name multiarch
+      - docker buildx build --push --platform=linux/amd64,linux/arm64 -t $REPOSITORY_URI:$IMAGE_TAG .
+      # - docker build -t $REPOSITORY_URI:latest .
+      # - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+  # post_build:
+  #   commands:
+  #     - echo Build completed on `date`
+  #     - echo Pushing the Docker images...
+  #     - docker push $REPOSITORY_URI:latest
+  #     - docker push $REPOSITORY_URI:$IMAGE_TAG

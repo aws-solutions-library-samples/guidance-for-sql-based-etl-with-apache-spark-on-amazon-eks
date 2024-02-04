@@ -19,22 +19,22 @@ find . -type f -name "*.bak" -delete
 
 # 2. install k8s command tools 
 echo "================================================================================"
-echo "  Installing kubectl tool on macOS ..."
+echo "  Installing kubectl tool on Linux ..."
 echo "  For other operationing system, install the kubectl > 1.27 here:"
 echo "  https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html"
 echo "================================================================================"
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl"
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 chmod +x kubectl
-mkdir -p $HOME/bin && mv kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+sudo mkdir -p /usr/local/bin && sudo mv kubectl /usr/local/bin/kubectl && export PATH=$PATH:/usr/local/bin/
 echo "Installed kubectl version: "
 kubectl version --client
 echo "================================================================================================"
-echo " Installing argoCLI tool on Mac ..."
+echo " Installing argoCLI tool on Linux ..."
 echo " Check out https://github.com/argoproj/argo-workflows/releases for other OS type installation."
 echo "================================================================================================"
 VERSION=v3.5.4
-sudo curl -sLO https://github.com/argoproj/argo-workflows/releases/download/${VERSION}/argo-darwin-amd64.gz && gunzip argo-darwin-amd64.gz
-chmod +x argo-darwin-amd64 && sudo mv ./argo-darwin-amd64 /usr/local/bin/argo
+sudo curl -sLO https://github.com/argoproj/argo-workflows/releases/download/${VERSION}/argo-linux-amd64.gz && gunzip argo-linux-amd64.gz
+chmod +x argo-linux-amd64 && sudo mv ./argo-linux-amd64 /usr/local/bin/argo
 echo "Installed argoCLI version: "
 argo version --short
 
@@ -53,3 +53,10 @@ echo -e "\nJUPYTER_URL: $LOGIN_URI"
 echo "LOGIN: $LOGIN" 
 echo "================================================================================================"
 
+#5. Get ArgoWorkflows login
+ARGO_LOGIN_URI=$(aws cloudformation describe-stacks --stack-name $stack_name --region $region \
+--query "Stacks[0].Outputs[?OutputKey=='ARGOURL'].OutputValue" --output text)
+
+echo -e "\n=============================== ARGO Workflows Login =============================================="
+echo -e "\nARGO_URL: $ARGO_LOGIN_URI"
+echo "================================================================================================"
