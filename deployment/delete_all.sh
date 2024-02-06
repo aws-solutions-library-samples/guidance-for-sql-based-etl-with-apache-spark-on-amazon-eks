@@ -15,15 +15,10 @@ code_bucket=$(aws cloudformation describe-stacks --stack-name $stack_name --regi
 if ! [ -z "$code_bucket" ] 
 then	
 	if ! [ -z $(aws s3api list-buckets --region $region --query 'Buckets[?Name==`'$code_bucket'`].Name' --output text) ]; then
-		echo "Delete S3 objects"
-		aws s3api list-object-versions --bucket $code_bucket --region $region --query "Versions[].Key" --output json | jq 'unique' | jq -r '.[]' | while read key; do
-		   echo "deleting versions of $key"
-		   aws s3api list-object-versions --bucket $code_bucket --region $region --prefix $key --query "Versions[].VersionId" --output json | jq 'unique' | jq -r '.[]' | while read version; do
-		     echo "deleting $version"
-		     aws s3api delete-object --bucket $code_bucket --key $key --version-id $version --region $region
-		   done
-		done   
-		aws s3 rb s3://${code_bucket} --force
+		echo "Delete logs from S3"
+		aws s3 rm s3://${code_bucket}/vpcRejectlog/
+		echo "Delete athena query result from S3"
+		aws s3 rm s3://${code_bucket}/athena-query-result/
 	fi	
 fi
 # delete ecr

@@ -25,7 +25,7 @@ argo-workflows -- v3.5.4 -- https://github.com/argoproj/argo-workflows -- Apache
 JupyterHub -- v1.5.0 -- https://hub.jupyter.org/helm-chart/ -- revised BSD license
 aws-cdk -- v2.105.0 -- https://github.com/aws/aws-cdk -- Apache-2.0
 k8s-cluster-autoscaler -- v1.27.2 -- https://github.com/kubernetes/autoscaler -- Apache-2.0
-amazon-cloudwatch-container-insights -- latest version -- https://github.com/aws-samples/amazon-cloudwatch-container-insights -- MIT-0
+# amazon-cloudwatch-container-insights -- latest version -- https://github.com/aws-samples/amazon-cloudwatch-container-insights -- MIT-0
 aws-load-balancer-controller -- v2.5.4 -- https://github.com/aws/eks-charts/ -- Apache-2.0
 kubernetes-external-secrets -- v8.5.5 -- https://github.com/external-secrets/kubernetes-external-secrets -- MIT License
 spark-on-k8s-operator -- v1beta2-1.2.3-3.1.1 -- https://github.com/GoogleCloudPlatform/spark-on-k8s-operator -- Apache-2.0

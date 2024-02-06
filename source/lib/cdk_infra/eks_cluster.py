@@ -44,8 +44,8 @@ class EksConst(Construct):
             desired_size = 1,
             max_size = 5,
             disk_size = 50,
-            # instance_types = [ec2.InstanceType('m5.xlarge')],
-            instance_types = [ec2.InstanceType('m7g.xlarge')],
+            instance_types = [ec2.InstanceType('m5.xlarge')],
+            # instance_types = [ec2.InstanceType('m7g.xlarge')],
             labels = {'app':'spark', 'lifecycle':'OnDemand'},
             subnets = ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS,one_per_az=True),
             tags = {'Name':'OnDemand-'+eksname,'k8s.io/cluster-autoscaler/enabled': 'true', 'k8s.io/cluster-autoscaler/'+eksname: 'owned'}
