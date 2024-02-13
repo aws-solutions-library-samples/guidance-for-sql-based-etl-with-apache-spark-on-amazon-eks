@@ -5,10 +5,12 @@ metadata:
   namespace: spark
 spec:
   serviceAccountName: arcjob
+  # keep workflows history for 30m
   ttlStrategy:
-    # keep workflows for 30m
     secondsAfterCompletion: 1800
   entrypoint: nyctaxi
+  nodeselector:
+    kubernetes.io/arch: amd64
   templates:
   - name: nyctaxi
     dag:
@@ -26,7 +28,7 @@ spec:
             - name: configUri
               value: https://raw.githubusercontent.com/tripl-ai/arc-starter/master/examples/kubernetes/nyctaxi.ipynb
             - name: image
-              value: ghcr.io/tripl-ai/arc:arc_3.11.1_spark_3.1.2_scala_2.12_hadoop_3.2.0_1.0.0  
+              value: ghcr.io/tripl-ai/arc:arc_4.2.0_spark_3.3.4_scala_2.12_hadoop_3.3.2_4.2.1_slim
             - name: parameters
               value: "--ETL_CONF_DATA_URL=s3a://nyc-tlc/csv_backup \
               --ETL_CONF_JOB_URL=https://raw.githubusercontent.com/tripl-ai/arc-starter/master/examples/kubernetes"

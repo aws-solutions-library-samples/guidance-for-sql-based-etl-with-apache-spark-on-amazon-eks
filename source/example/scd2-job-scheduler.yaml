@@ -6,6 +6,8 @@ metadata:
 spec:
   serviceAccountName: arcjob
   entrypoint: scd2-process
+  nodeselector:
+    kubernetes.io/arch: amd64
   arguments:
     parameters:
     - name: codeBucket
