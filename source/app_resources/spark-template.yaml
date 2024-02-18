@@ -82,6 +82,7 @@ spec:
         --conf spark.kubernetes.namespace={{workflow.namespace}} \
         --conf spark.network.crypto.enabled=true \
         --conf spark.sql.ansi.enabled=true \
+        --conf spark.hadoop.fs.s3a.aws.credentials.provider=com.amazonaws.auth.WebIdentityTokenCredentialsProvider \
         {{inputs.parameters.sparkConf}} \
         local:///opt/spark/jars/arc.jar \
         --etl.config.uri={{inputs.parameters.configUri}} \
@@ -169,6 +170,7 @@ spec:
         --conf spark.kubernetes.namespace={{workflow.namespace}} \
         --conf spark.network.crypto.enabled=true \
         --conf spark.sql.ansi.enabled=true \
+        --conf spark.hadoop.fs.s3a.aws.credentials.provider=com.amazonaws.auth.WebIdentityTokenCredentialsProvider \
         {{inputs.parameters.sparkConf}} \
         local:///opt/spark/jars/arc.jar \
         --etl.config.uri={{inputs.parameters.configUri}} \
@@ -256,6 +258,7 @@ spec:
         --conf spark.kubernetes.namespace={{workflow.namespace}} \
         --conf spark.network.crypto.enabled=true \
         --conf spark.sql.ansi.enabled=true \
+        --conf spark.hadoop.fs.s3a.aws.credentials.provider=com.amazonaws.auth.WebIdentityTokenCredentialsProvider \
         {{inputs.parameters.sparkConf}} \
         local:///opt/spark/jars/arc.jar \
         --etl.config.uri={{inputs.parameters.configUri}} \
@@ -330,6 +333,7 @@ spec:
         --conf spark.network.crypto.enabled=true \
         --conf spark.ui.enabled=true \
         --conf spark.sql.ansi.enabled=true \
+        --conf spark.hadoop.fs.s3a.aws.credentials.provider=com.amazonaws.auth.WebIdentityTokenCredentialsProvider \
         {{inputs.parameters.sparkConf}} \
         local:///opt/spark/jars/arc.jar \
         --etl.config.uri={{inputs.parameters.configUri}} \

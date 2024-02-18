@@ -40,11 +40,10 @@ this capability, please see the [implementation guide](https://docs.aws.amazon.c
 
 ## Prerequisites 
 1. Python 3.6 or later. Download Python [here](https://www.python.org/downloads/).
-2. kubectl 1.24.13 or later. See the installation [here](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html)
-3. AWS CLI version 1.
+2. AWS CLI version 1.
   Windows: [MSI installer](https://docs.aws.amazon.com/cli/latest/userguide/install-windows.html#install-msi-on-windows)
   Linux, macOS or Unix: [Bundled installer](https://docs.aws.amazon.com/cli/latest/userguide/install-macos.html#install-macosos-bundled)
-4. The AWS CLI can communicate with services in your deployment account. Otherwise, run the following script to setup your AWS account access from a command line tool.
+3. The AWS CLI can communicate with services in your deployment account. Otherwise, run the following script to setup your AWS account access from a command line tool.
 ```bash
 aws configure
 ```
@@ -231,6 +230,8 @@ metadata:
 spec:
   serviceAccountName: arcjob
   entrypoint: nyctaxi
+  nodeselector:
+    kubernetes.io/arch: amd64
   templates:
   - name: nyctaxi
     dag:
@@ -248,7 +249,7 @@ spec:
             - name: configUri
               value: https://raw.githubusercontent.com/tripl-ai/arc-starter/master/examples/kubernetes/nyctaxi.ipynb
             - name: image
-              value: ghcr.io/tripl-ai/arc:arc_3.11.1_spark_3.1.2_scala_2.12_hadoop_3.2.0_1.0.0
+              value: ghcr.io/tripl-ai/arc:arc_4.2.0_spark_3.3.4_scala_2.12_hadoop_3.3.2_4.2.1_slim
             - name: parameters
               value: "--ETL_CONF_DATA_URL=s3a://nyc-tlc/csv_backup \
               --ETL_CONF_JOB_URL=https://raw.githubusercontent.com/tripl-ai/arc-starter/master/examples/kubernetes"

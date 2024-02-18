@@ -28,10 +28,15 @@
     - athena:StartQueryExecution
     - athena:GetQueryExecution
     - athena:GetQueryResults
+    - athena:GetQueryResultsStream
+    - athena:GetWorkGroup
+    - athena:ListDataCatalogs
     - glue:CreateTable
     - glue:CreateDatabase
     - glue:CreatePartition
     - glue:UpdatePartition
-    - glue:GetDatabase
+    - glue:GetTable
+    - glue:GetDatabases
+    - glue:GetCatalogImportStatus
     Resource:
       - '*'   

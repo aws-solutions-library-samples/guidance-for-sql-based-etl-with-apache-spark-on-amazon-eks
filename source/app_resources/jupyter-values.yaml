@@ -16,6 +16,7 @@ hub:
         if kube_spawner.service_account is not None:
           kube_spawner.service_account = kube_spawner._expand_user_properties(kube_spawner.service_account)
           kube_spawner.env['USER_NAME'] = kube_spawner._expand_user_properties("{unescaped_username}")
+          print("kube_spawner.service_account = " + kube_spawner.service_account)
       c.KubeSpawner.pre_spawn_hook = override_service_account_hook
       
       # setup timeout
@@ -29,7 +30,7 @@ hub:
           name: jupyter-external-secret
           key: password
   nodeSelector:
-    lifecycle: Ec2Spot
+    lifecycle: OnDemand
   readinessProbe:
     initialDelaySeconds: 30
     periodSeconds: 10
@@ -48,7 +49,7 @@ singleuser:
     kubernetes.io/arch: amd64
   image:
     name: ghcr.io/tripl-ai/arc-jupyter
-    tag:  arc-jupyter_3.14.2_scala_2.12_hadoop_3.2.0_1.1.0
+    tag:  arc-jupyter_3.16.0_scala_2.12_hadoop_3.3.2_3.16.0_slim
     pullPolicy: Always
   lifecycleHooks:
     postStart:
@@ -73,6 +74,7 @@ singleuser:
     JAVA_OPTS: -Xmx4G
     ETL_CONF_DATALAKE_LOC: {{codeBucket}}
     ETL_CONF_AWS_REGION: {{region}}
+    conf_spark_hadoop_fs_s3a_aws_credentials_provider: com.amazonaws.auth.WebIdentityTokenCredentialsProvider
   storage:
     type: none
   # storage:
@@ -110,4 +112,4 @@ scheduling:
 cull:
   timeout: 1800
 # debug:
-#   enabled: true      
+#   enabled: true
