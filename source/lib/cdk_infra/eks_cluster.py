@@ -48,7 +48,7 @@ class EksConst(Construct):
             labels = {'app':'spark', 'lifecycle':'OnDemand'},
             subnets = ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS,one_per_az=True),
             tags = {'Name':'OnDemand-'+eksname,'k8s.io/cluster-autoscaler/enabled': 'true', 'k8s.io/cluster-autoscaler/'+eksname: 'owned'}
-        )  
+        )
 
         # 3. Add Spot managed NodeGroup to EKS (Run Spark exectutor on spot)
         self._my_cluster.add_nodegroup_capacity('spot-mn',
@@ -58,10 +58,21 @@ class EksConst(Construct):
             desired_size = 1,
             max_size = 30,
             disk_size = 50,
-            instance_types=[ec2.InstanceType("r5.xlarge"),ec2.InstanceType("r4.xlarge"),ec2.InstanceType("r5a.xlarge")],
+            instance_types=[ec2.InstanceType('r5.xlarge'),ec2.InstanceType('r4.xlarge'),ec2.InstanceType('r5a.xlarge')],
             labels = {'app':'spark', 'lifecycle':'Ec2Spot'},
             tags = {'Name':'Spot-'+eksname, 'k8s.io/cluster-autoscaler/enabled': 'true', 'k8s.io/cluster-autoscaler/'+eksname: 'owned'}
         )
+        self._my_cluster.add_nodegroup_capacity('spot-arm64',
+            nodegroup_name = 'etl-graviton',
+            node_role = noderole,
+            desired_size = 1,
+            max_size = 30,
+            disk_size = 50,
+            instance_types = [ec2.InstanceType('r7g.xlarge'),ec2.InstanceType('m6g.xlarge'),ec2.InstanceType('m7g.xlarge')],
+            labels = {'app':'spark', 'lifecycle':'Ec2Spot'},
+            subnets = ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS,one_per_az=True),
+            tags = {'Name':'Spot-arm64-'+eksname,'k8s.io/cluster-autoscaler/enabled': 'true', 'k8s.io/cluster-autoscaler/'+eksname: 'owned'}
+        )  
 
         # # 4. Add Fargate NodeGroup to EKS, without setup cluster-autoscaler
         # self._my_cluster.add_fargate_profile('FargateEnabled',
