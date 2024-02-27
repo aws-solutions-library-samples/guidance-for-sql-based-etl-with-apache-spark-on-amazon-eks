@@ -1,14 +1,18 @@
 controller:
   workflowNamespaces:
     - argo
+  nodeSelector:
+    eks.amazonaws.com/capacityType: ON_DEMAND
 init:
-  serviceAccount: arcjob    
+  serviceAccount: arcjob
 workflow:
   namespace: spark
   serviceAccount:
     create: false
     name: arcjob
 server:
+  nodeSelector:
+    eks.amazonaws.com/capacityType: ON_DEMAND
   extraArgs:
   - --auth-mode
   - client

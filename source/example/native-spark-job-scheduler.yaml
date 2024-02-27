@@ -11,7 +11,7 @@ spec:
   imagePullPolicy: Always
   mainApplicationFile: "s3a://$(BUCKET_PARAM)/app_code/job/wordcount.py"
   arguments: ["s3a://nyc-tlc/csv_backup/yellow_tripdata*.csv","s3a://$(BUCKET_PARAM)/app_code/output/native"]
-  sparkVersion: "3.1.2"
+  sparkVersion: "3.3.4"
   sparkConf:
     "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
     "spark.hadoop.fs.s3a.aws.credentials.provider": "com.amazonaws.auth.WebIdentityTokenCredentialsProvider"
@@ -35,7 +35,7 @@ spec:
     onSubmissionFailureRetries: 5
     onSubmissionFailureRetryInterval: 5          
   driver:
-    # run driver on Spot
+    # schedule on spot to test the driver restart
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:  
@@ -44,8 +44,7 @@ spec:
               - key: lifecycle
                 operator: In 
                 values: 
-                - Ec2Spot
-                # - OnDemand    
+                - Ec2Spot   
     env:
       - name: BUCKET_PARAM
         valueFrom:
@@ -61,7 +60,7 @@ spec:
       - name: spark-local-dir-1
         mountPath: "/tmp"
   executor:
-   # run executors on Spot
+   # start executors on Spot
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:     

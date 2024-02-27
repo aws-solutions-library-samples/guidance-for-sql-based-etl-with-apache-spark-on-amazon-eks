@@ -6,3 +6,5 @@ clusterName: {{cluster_name}}
 serviceAccount:
   create: false
   name: alb-aws-load-balancer-controller
+nodeSelector:
+  eks.amazonaws.com/capacityType: ON_DEMAND

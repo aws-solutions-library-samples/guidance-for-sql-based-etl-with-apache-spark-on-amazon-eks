@@ -127,7 +127,7 @@ pip install -e source
 * Option1: Deploy with default (recommended)
 ```bash
 cd source
-cdk deploy
+cdk deploy --require-approval never
 ```
 * Option2: If ETL your own data, use the parameter datalakebucket
 By default, the deployment creates a new S3 bucket containing sample data and ETL job config. 

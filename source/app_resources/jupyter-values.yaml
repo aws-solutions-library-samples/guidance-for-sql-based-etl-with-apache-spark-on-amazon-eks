@@ -46,7 +46,7 @@ proxy:
 singleuser:
   defaultUrl: "/lab"
   nodeSelector:
-    kubernetes.io/arch: amd64
+    lifecycle: OnDemand
   image:
     name: ghcr.io/tripl-ai/arc-jupyter
     tag:  arc-jupyter_3.16.0_scala_2.12_hadoop_3.3.2_3.16.0_slim

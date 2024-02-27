@@ -63,14 +63,14 @@ class EksConst(Construct):
             tags = {'Name':'Spot-'+eksname, 'k8s.io/cluster-autoscaler/enabled': 'true', 'k8s.io/cluster-autoscaler/'+eksname: 'owned'}
         )
         self._my_cluster.add_nodegroup_capacity('spot-arm64',
-            nodegroup_name = 'etl-graviton',
+            nodegroup_name = 'etl-spot-graviton',
             node_role = noderole,
+            capacity_type=eks.CapacityType.SPOT,
             desired_size = 1,
             max_size = 30,
             disk_size = 50,
-            instance_types = [ec2.InstanceType('r7g.xlarge'),ec2.InstanceType('m6g.xlarge'),ec2.InstanceType('m7g.xlarge')],
+            instance_types = [ec2.InstanceType('r7g.xlarge'),ec2.InstanceType('r6g.xlarge'),ec2.InstanceType('r6gd.xlarge')],
             labels = {'app':'spark', 'lifecycle':'Ec2Spot'},
-            subnets = ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS,one_per_az=True),
             tags = {'Name':'Spot-arm64-'+eksname,'k8s.io/cluster-autoscaler/enabled': 'true', 'k8s.io/cluster-autoscaler/'+eksname: 'owned'}
         )  
 
