@@ -82,7 +82,7 @@ class EksConst(Construct):
             labels = {'nodegroup':'single-az-graviton', 'lifecycle':'Ec2Spot'},
             # The unique tag k8s.io/cluster-autoscaler/node-template/label/nodegroup:etl-spot-graviton is a must
             # to enable the nodegroup scale from 0 to N for the cost efficiency
-            tags = {'Name':'single-az-graviton','k8s.io/cluster-autoscaler/enabled': 'true', 'k8s.io/cluster-autoscaler/'+eksname: 'owned','k8s.io/cluster-autoscaler/node-template/label/nodegroup':'single-az-graviton'}
+            tags = {'Name':'single-az-graviton','k8s.io/cluster-autoscaler/enabled': 'true', 'k8s.io/cluster-autoscaler/'+eksname: 'owned','k8s.io/cluster-autoscaler/node-template/label/eks\:nodegroup-name':'single-az-graviton'}
         )  
 
         # # 4. Add Fargate NodeGroup to EKS, without setup cluster-autoscaler

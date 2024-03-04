@@ -35,6 +35,7 @@
     - glue:CreateDatabase
     - glue:CreatePartition
     - glue:UpdatePartition
+    - glue:UpdateTable
     - glue:GetTable
     - glue:GetDatabases
     - glue:GetCatalogImportStatus
