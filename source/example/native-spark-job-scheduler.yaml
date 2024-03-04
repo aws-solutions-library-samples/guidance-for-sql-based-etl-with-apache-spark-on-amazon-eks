@@ -13,6 +13,9 @@ spec:
   arguments: ["s3a://nyc-tlc/csv_backup/yellow_tripdata*.csv","s3a://$(BUCKET_PARAM)/app_code/output/native"]
   sparkVersion: "3.3.4"
   sparkConf:
+    # By design, the graviton EKS nodegroup in a single AZ at cluster creation time
+    # the nodegroup label is a must to scale from 0 to N within a single AZ 
+    # "spark.kubernetes.node.selector.nodegroup':'single-az-graviton'
     "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
     "spark.hadoop.fs.s3a.aws.credentials.provider": "com.amazonaws.auth.WebIdentityTokenCredentialsProvider"
     "spark.kubernetes.allocation.batch.size": "15" 

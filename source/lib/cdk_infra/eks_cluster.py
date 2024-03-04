@@ -45,7 +45,9 @@ class EksConst(Construct):
             max_size = 5,
             disk_size = 50,
             instance_types = [ec2.InstanceType('m7g.xlarge')],
-            labels = {'app':'spark', 'lifecycle':'OnDemand'},
+            labels = {'lifecycle':'OnDemand'},
+            # create one nodegroup per AZ, as cluster autoscaler has no control over what AZ ASG will launch instance in.
+            # if using Karpenter, this is not needed.
             subnets = ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS,one_per_az=True),
             tags = {'Name':'OnDemand-'+eksname,'k8s.io/cluster-autoscaler/enabled': 'true', 'k8s.io/cluster-autoscaler/'+eksname: 'owned'}
         )
@@ -59,19 +61,28 @@ class EksConst(Construct):
             max_size = 30,
             disk_size = 50,
             instance_types=[ec2.InstanceType('r5.xlarge'),ec2.InstanceType('r4.xlarge'),ec2.InstanceType('r5a.xlarge')],
-            labels = {'app':'spark', 'lifecycle':'Ec2Spot'},
+            subnets = ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS,one_per_az=True),
+            labels = {'lifecycle':'Ec2Spot'},
+            # The unique tag k8s.io/cluster-autoscaler/node-template/label/nodegroup: etl-spot is a must
+            # to enable the nodegroup scale from 0 to N for the cost efficiency
             tags = {'Name':'Spot-'+eksname, 'k8s.io/cluster-autoscaler/enabled': 'true', 'k8s.io/cluster-autoscaler/'+eksname: 'owned'}
         )
         self._my_cluster.add_nodegroup_capacity('spot-arm64',
-            nodegroup_name = 'etl-spot-graviton',
+            nodegroup_name = 'single-az-graviton',
             node_role = noderole,
             capacity_type=eks.CapacityType.SPOT,
-            desired_size = 1,
+            desired_size = 0,
+            min_size=0,
             max_size = 30,
             disk_size = 50,
             instance_types = [ec2.InstanceType('r7g.xlarge'),ec2.InstanceType('r6g.xlarge'),ec2.InstanceType('r6gd.xlarge')],
-            labels = {'app':'spark', 'lifecycle':'Ec2Spot'},
-            tags = {'Name':'Spot-arm64-'+eksname,'k8s.io/cluster-autoscaler/enabled': 'true', 'k8s.io/cluster-autoscaler/'+eksname: 'owned'}
+            # create one nodegroup per AZ, as cluster autoscaler has no control over what AZ ASG will launch instance in.
+            # if using Karpenter, this is not needed.
+            subnets = ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS,availability_zones=sorted(eksvpc.availability_zones)[1:2]),
+            labels = {'nodegroup':'single-az-graviton', 'lifecycle':'Ec2Spot'},
+            # The unique tag k8s.io/cluster-autoscaler/node-template/label/nodegroup:etl-spot-graviton is a must
+            # to enable the nodegroup scale from 0 to N for the cost efficiency
+            tags = {'Name':'single-az-graviton','k8s.io/cluster-autoscaler/enabled': 'true', 'k8s.io/cluster-autoscaler/'+eksname: 'owned','k8s.io/cluster-autoscaler/node-template/label/nodegroup':'single-az-graviton'}
         )  
 
         # # 4. Add Fargate NodeGroup to EKS, without setup cluster-autoscaler

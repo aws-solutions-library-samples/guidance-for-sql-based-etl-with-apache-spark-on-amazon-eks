@@ -4,13 +4,13 @@ awsRegion: {{region_name}}
 image:
     tag: v1.27.3
 nodeSelector:
-    app: spark
+  eks.amazonaws.com/capacityType: ON_DEMAND
 podAnnotations:
     cluster-autoscaler.kubernetes.io/safe-to-evict: 'false'
 extraArgs:
     skip-nodes-with-system-pods: false
-    scale-down-unneeded-time: 5m
-    scale-down-unready-time: 10m
+    scale-down-unneeded-time: 2m
+    scale-down-unready-time: 5m
 rbac:
     serviceAccount:
         create: false

@@ -1,4 +1,5 @@
 nodeSelector:
+  # spark operator only works with non-graviton CPU
   kubernetes.io/arch: amd64
 serviceAccounts:
   spark:
