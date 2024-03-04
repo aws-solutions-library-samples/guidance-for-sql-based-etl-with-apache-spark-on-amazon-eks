@@ -369,7 +369,7 @@ Navigate to the [Spot Requests console](https://console.aws.amazon.com/ec2/home?
 #### Autoscaling & Dynamic resource allocation
 The job will finish off with 20 Spark executors/pods on approx. 7 spot EC2 instances. It takes 10 minutes to process and aggregate a large dataset. Based on the resource allocation strategy defined by the [job manifest file](source/example/native-spark-job-scheduler.yaml), it runs 3 executors or 1 driver + 2 executors per EC2 spot instance. 
 
-Once the job is kicked in, you will see the scaling is triggered instantly. It creates a Spark cluster from 0 to 10 executors, then reduce to 3 executors as only 1 spot instance is available initially. Eventually, the Spark cluster scales to 20 executors, driven by the Dynamic Resource Allocation feature in Spark.
+Once the job is kicked in, you will see the scaling is triggered instantly. It creates a Spark cluster from 0 to 15 executors first. Eventually, the Spark cluster scales to 20 executors, driven by the Dynamic Resource Allocation feature in Spark.
 
 The autoscaling is configured to be balanced across two AZs.
 ```bash
