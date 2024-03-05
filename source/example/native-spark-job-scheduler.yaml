@@ -14,7 +14,7 @@ spec:
   sparkVersion: "3.3.4"
   sparkConf:
     # By design, the graviton EKS nodegroup is in a single AZ
-    # the label is a must to use this nodegroup to scale Graviton instances within a single AZ 
+    # use the nodegroup label to trigger the scaling of Graviton instances within a single AZ 
     # "spark.kubernetes.node.selector.nodegroup": "single-az-graviton"
     "spark.hadoop.fs.s3a.impl": "org.apache.hadoop.fs.s3a.S3AFileSystem"
     "spark.hadoop.fs.s3a.aws.credentials.provider": "com.amazonaws.auth.WebIdentityTokenCredentialsProvider"

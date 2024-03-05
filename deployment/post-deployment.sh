@@ -28,15 +28,6 @@ chmod +x kubectl
 sudo mkdir -p /usr/local/bin && sudo mv kubectl /usr/local/bin/kubectl && export PATH=$PATH:/usr/local/bin/
 echo "Installed kubectl version: "
 kubectl version --client
-echo "================================================================================"
-echo "  Installing eksctl tool on Linux ..."
-echo "  For other operationing system, check out the site"
-echo "  https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/setting-up-eksctl.html"
-echo "================================================================================"
-curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-sudo mv /tmp/eksctl /usr/local/bin
-echo "Installed eksctl version: "
-eksctl version
 echo "================================================================================================"
 echo " Installing argoCLI tool on Linux ..."
 echo " Check out https://github.com/argoproj/argo-workflows/releases for other OS type installation."

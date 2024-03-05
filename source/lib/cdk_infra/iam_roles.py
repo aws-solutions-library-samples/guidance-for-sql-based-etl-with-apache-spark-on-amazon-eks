@@ -40,7 +40,8 @@ class IamConst(Construct):
                 "eks:List*",
                 "eks:AccessKubernetesApi",
                 "ssm:GetParameter",
-                "iam:ListRoles"
+                "iam:ListRoles",
+                "emr-containers:CreateVirtualCluster"
             ],
         ))
         Tags.of(self._clusterAdminRole).add(
