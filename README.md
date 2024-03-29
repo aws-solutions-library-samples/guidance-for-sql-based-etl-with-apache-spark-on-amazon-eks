@@ -1,14 +1,72 @@
-# SQL-based ETL with Apache Spark on Amazon EKS
-This is a project developed with Python [CDK](https://docs.aws.amazon.com/cdk/latest/guide/home.html) for the solution - SQL based ETL with a declarative framework powered by Apache Spark. 
+# SQL-Based Extraction, Transformation and Loading with Apache Spark on Amazon EKS
 
-We introduce a quality-aware design to increase data process productivity, by leveraging an open-source [Arc data framework](https://arc.tripl.ai/) for a user-centred declarative ETL solution. Additionally, we take considerations of the needs and expected skills from customers in data analytics, and accelerate their interaction with ETL practice in order to foster simplicity, while maximizing efficiency.
+The 'SQL-Based Extraction, Transformation and Loading with Apache Spark on Amazon EKS' guidance provides [declarative](https://en.wikipedia.org/wiki/Declarative_programming) data processing support, codeless extract-transform-load (ETL) capabilities, and [workflow orchestration ](https://www.prefect.io/blog/intro-to-workflow-orchestration) automation to help business users (such as analysts and data scientists) access their data and create meaningful insights without a need for manual IT processes.
 
-This solution collects anonymous operational metrics to help AWS improve the
-quality of features of the solution. For more information, including how to disable
-this capability, please see the [implementation guide](https://docs.aws.amazon.com/solutions/latest/sql-based-etl-with-apache-spark-on-amazon-eks/collection-of-operational-metrics.html).
+This guidance abstracts common ETL activities, including formatting, partitioning, and transforming datasets, into configurable and productive data processes. This abstraction results in actionable insights derived more quickly to help you accelerate your data-driven business decisions. Additionally, this guidance uses an open-source Arc data processing framework, run on Amazon Elastic Kubernetes Service [(Amazon EKS)](https://aws.amazon.com/eks/) and powered by [Apache Spark](https://spark.apache.org/) and container technologies, to simplify Spark application development and deployment.
 
-## Overview
-![](source/images/architecture.png)
+This guidance uses [GitHub](https://github.com/) as the source repository to track ETL asset changes, such as Jupyter notebook scripts and SQL script updates, allowing for application version control and standardized continuous integration and continuous delivery (CI/CD) deployments. It unifies analytical workloads and IT operations using standardized and automated processes, providing a simplified ETL deployment management capability for your organization’s DevOps team. These automated processes help you avoid unintentional human mistakes caused by manual, repetitive tasks.
+
+### Features and benefits
+
+The Guidance for SQL-Based Extraction, Transformation and Loading with Apache Spark on Amazon EKS offers the following features:
+
+-	**Build, test, and debug ETL jobs in Jupyter**: Use [JupyterHub](https://z2jh.jupyter.org/en/latest/), a web-based interactive integrated development environment (IDE) to simplify your ETL development experience. It includes a custom [Arc kernel](https://arc.tripl.ai/getting-started/#notebook) that enables you to define each ETL task or stage in separate blocks. The execution of each block produces data results and a task log. The log captures real-time data processing status and exception messages that can be valuable for debugging.
+
+-	**Use a SQL-first approach**: Implement business logic and data quality checks in ETL pipeline development using [Spark SQL](https://spark.apache.org/docs/latest/sql-ref.html). You can process and manipulate data in Spark using your existing SQL expertise.
+
+-	**Orchestrate jobs without code**: Use [Argo workflows](https://argo-workflows.readthedocs.io/en/latest/) to schedule jobs and manage complex job run dependencies without the need to code. Argo workflows allows you declaratively define job implementation target state, orders, and relationships. It provides a user-friendly graphical dashboard to help you track workflow status and resource usage patterns. The job orchestration tool in this guidance is a switchable plug-in and can be replaced by another tool of your choice, for example Apache Airflow or Volcano.
+
+-	**Auto-deploy Docker images**: Set up an AWS continuous improvement and continuous development (CI/CD) pipeline to securely store the guidance's Arc Docker image in Amazon Elastic Container Registry ([Amazon ECR](https://aws.amazon.com/ecr/)).
+
+-	**Automate ETL artifact deployment**: Integrate the Jupyter IDE with the guidance GitHub repository to detect the state of an ETL application change. As a one-off setup with your choice of CI/CD tool, a GitHub change activates a file sync-up process between your repository and the artifact store of [Amazon S3](https://aws.amazon.com/s3/) bucket. As a result, Argo Workflows can refer to the latest or versioned application assets in S3, such as a Jupyter notebook (ETL job specification) file, then orchestrate an ETL job run either on-demand or based on a time or an event.
+
+### Use cases
+
+Driven by the modern [Data Lake](https://aws.amazon.com/what-is/data-lake/) architecture, data engineers usually have to implement formatting, partitioning, and transforming of datasets, before making data available to data analysts and data scientists, so that they can start to produce insights for business with well-formed data. For organisations that are operating on SQL based data management systems or tools, adapting to a modern data lake practice with Apache Spark technology slows down the progress of data to insight. Increasingly a business's success depends on its agility in transforming data into actionable insights, which requires efficient and automated data processes. The gap between data consumption requirements and low-level data engineering activities is addressed by this AWS Guidance. 
+
+To accelerate data innovation with faster time to insight, this AWS guidance provides you a codeless extract-transform-load (ETL) option driven by a SQL centric architecture. By leveraging [an open-source data framework (Arc)](https://arc.tripl.ai/) powered by Apache Spark and Container technologies, it enables our customers to build a modern data guidance on an AWS managed container service with ease of use. Additionally, if you want to take advantage of an optimized [Amazon EMR](https://aws.amazon.com/emr/) runtime for Apache Spark plus other features offered EMR, the Arc framework can be utilized in Amazon EMR on Amazon EKS deployment option with no code changes. 
+
+## Architecture overview
+
+This section provides an architecture diagram and describes the components deployed with this Guidance.
+
+![](source/images/sql-based-etl-spark-architecture-final.png)
+
+### Architecture steps
+
+1. Users interact with Extraction, Transformation and Loading (ETL) development and orchestration tools via [Amazon CloudFront](https://aws.amazon.com/cloudfront/) endpoints with [Application Load Balancer](https://aws.amazon.com/elasticloadbalancing/application-load-balancer/) origins, which provide secure connections between clients and ETL tools’ endpoints.
+2. Users interactively develop, test and schedule ETL jobs that process batch and stream data. The data traffic between ETL processes and data stores flows through [Amazon Virtual Private Cloud (VPC)](https://aws.amazon.com/vpc/) Endpoints ([AWS PrivateLink](https://docs.aws.amazon.com/whitepapers/latest/aws-privatelink/what-are-vpc-endpoints.html)) without leaving the AWS network.
+3. [JupyterHub](https://jupyter.org/hub), [Argo Workflows](https://argoproj.github.io/workflows/) and [Kubernetes Operator for Apache Spark](https://github.com/kubeflow/spark-operator/tree/master) are running as containers on [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) cluster. JupyterHub IDE can integrate with a source code repository (GitHub) to track ETL assets changes made by users. The assets include Jupyter notebook files, SQL scripts etc., to be run with the [Arc ETL framework](https://arc.tripl.ai/).
+4. ETL assets can be updated by users in the source code repository (GitHub), then uploaded to an [Amazon S3](https://aws.amazon.com/s3/) bucket. The synchronization process can be implemented by an automated [CI/CD](https://about.gitlab.com/topics/ci-cd/) deployment process triggered by updates in the source code repository or performed manually.
+5. Users can change Docker build source code uploaded from a code repository to the S3 ETL Asset bucket. It activates an [AWS CodeBuild](https://aws.amazon.com/codebuild/) /[AWS CodePipeline](https://aws.amazon.com/codepipeline) CI/CD pipeline to automatically rebuild and push the Arc ETL Framework container image to an [Amazon ECR](https://aws.amazon.com/ecr) private registry. 
+6. Users schedule ETL jobs via Argo Workflows to be run on [Amazon EKS](https://aws.amazon.com/eks/). These jobs automatically pull Arc ETL Framework container image from ECR, download ETL assets from the artifact S3 bucket, and send application execution logs to [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/). Access to all the AWS services is secured via VPC endpoints.
+7. JupyterHub IDE automatically retrieves login credentials from [Amazon Secrets Manager](https://aws.amazon.com/secrets-manager/) to validate sign-in user requests. Authenticated users can interactively develop and test their notebooks as ETL jobs in JupyterHub.
+8. Users access the ETL output data in Data Lake that supports the [ACID Transaction](https://docs.aws.amazon.com/athena/latest/ug/acid-transactions.html) needs.  Users can query Delta Lake tables via [Amazon Athena](https://docs.aws.amazon.com/athena/latest/ug/what-is.html) integrated with [AWS Glue Data Catalog](https://docs.aws.amazon.com/prescriptive-guidance/latest/serverless-etl-aws-glue/aws-glue-data-catalog.html)
+
+
+### AWS Services used  in this Guidance
+
+| **AWS service**  | Description |
+|-----------|------------|
+|[Amazon Elastic Kubernetes Service - EKS](https://aws.amazon.com/eks/)|Core service - The EKS service is used to host the guidance workloads|
+|[Amazon Virtual Private Cloud - VPC](https://aws.amazon.com/vpc/)| Core Service - network security layer |
+|[Amazon Elastic Compute Cloud - EC2](https://aws.amazon.com/ec2/)| Core Service - EC2 instance power On Demand and Spot based EKS compute node groups for running container workloads|
+|[Amazon Elastic Container Registry - ECR](https://aws.amazon.com/ecr/)|Core service - ECR registry is used to host the container images for Spark jobs and Arc ETL Framework|
+|[Amazon Elastic Map Reduce EMR on EKS](https://aws.amazon.com/emr/features/eks/)| Auxiliary service - alternative way to configure and run ETL Jobs on EKS| 
+|[Amazon Athena](https://aws.amazon.com/athena/)| Core service - used for SQL syntax Querying of Sample ETL job results from S3|
+|[AWS Glue Data Catalog](https://docs.aws.amazon.com/glue/latest/dg/components-overview.html#data-catalog-intro)| Auxiliary service - exposes ETL related data stores |
+|[Amazon S3](https://aws.amazon.com/s3/)|Core service - Object storage for users' ETL assets from GitHub|
+|[Amazon CloudFront](https://aws.amazon.com/cloudfront/)|Auxiliary service - provides SSL entrypoints for Jupyter and Argo Workflows tools |
+|[Amazon CloudWatch](https://aws.amazon.com/cloudwatch/)|Auxiliary service - provides observability for core services  |
+|[AWS Secretes Manager](https://aws.amazon.com/secrets-manager/)|Auxiliary service - provides user credentials management for Jupyter IDE |
+|[AWS CodeBuild](https://aws.amazon.com/codebuild/)| Core service - CI/CD automation for building Arc ETL framework images  |
+|[AWS CodePipeline](https://aws.amazon.com/codepipeline)| Core service - CI/CD automation for pushing Arc ETL framework images into ECR registry|
+
+## Deployment
+
+Please see detailed Implementation Guide [here](https://implementationguides.kits.eventoutfitters.aws.dev/sql-etl-eks-1101/compute/sql-based-etl-with-apache-spark-on-eks.html#uninstall-the-guidance)
+
+=======================================
 
 ### Test job in Jupyter
 ![](source/images/run_jupyter.gif)
