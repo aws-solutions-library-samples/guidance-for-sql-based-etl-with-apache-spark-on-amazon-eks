@@ -64,8 +64,9 @@ This section provides an architecture diagram and describes the components deplo
 
 ## Deployment
 
-Please see detailed Implementation Guide [here](https://implementationguides.kits.eventoutfitters.aws.dev/sql-etl-eks-1101/compute/sql-based-etl-with-apache-spark-on-eks.html#uninstall-the-guidance)
+Please see detailed Implementation Guide *TO BE UPDATED WITH LIVE LINK *  [here](https://implementationguides.kits.eventoutfitters.aws.dev/sql-etl-eks-1101/compute/sql-based-etl-with-apache-spark-on-eks.html#uninstall-the-guidance)
 
+<!--
 =======================================
 
 ### Test job in Jupyter
@@ -476,10 +477,12 @@ cd guidance-for-sql-based-extraction-transformation-and-loading-with-apache-spar
 Go to the [CloudFormation console](https://console.aws.amazon.com/cloudformation/home?region=us-east-1), manually delete the remaining resources if needed.
 
 [*^ back to top*](#Table-of-Contents)
+-->
+
 ## Security
 
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
 
 ## License
 
-This project is licensed under the Apache-2.0 License. See the [LICENSE](LICENSE.txt) file.
+This project is licensed under the MIT-0 License. See the [LICENSE](LICENSE.txt) file.
