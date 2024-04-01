@@ -62,6 +62,36 @@ This section provides an architecture diagram and describes the components deplo
 |[AWS CodeBuild](https://aws.amazon.com/codebuild/)| Core service - CI/CD automation for building Arc ETL framework images  |
 |[AWS CodePipeline](https://aws.amazon.com/codepipeline)| Core service - CI/CD automation for pushing Arc ETL framework images into ECR registry|
 
+## Plan your deployment
+
+### Cost 
+
+You are responsible for the cost of the AWS services used while running this Guidance. As of February 2024, the estimated cost for running this Guidance with the default two-node Amazon EKS cluster in the US East (N. Virginia) Region is approximately **\$0.64 an hour** or **\$467.76 per month**. Refer to the AWS pricing [webpage](https://aws.amazon.com/pricing/?aws-products-pricing) for each AWS service used in this Guidance.
+
+### Sample Cost table
+
+The following table provides a sample cost breakdown for deploying this
+Guidance with the default parameters in the US East (N. Virginia) Region
+for one month.
+
+| **AWS service**  | Rate | Cost \[USD\] |
+|-----------|------------|------------|
+| Amazon EKS cluster (no compute) |  \$0.10 per hour per cluster X 1 | \$73.00 |
+| Amazon EC2 (On-Demand) | \$0.1632 per hour X 1 m7g.xlarge instance | \$119.14|
+| Amazon EC2 (Spot) | \$0.1174 per hour X 1 r4.xlarge instance | \$85.70 |
+| Amazon EC2 (Graviton Spot) | \$0.0966 per hour X 1 r7g.xlarge instance | \$70.52 | 
+| Elastic Load Balancing | \$0.0225 Application Load Balancer per hour X 2 ALBs | \$32.85 |
+| Elastic Load Balancing | \$0.008 Load Balancer Capacity Units (LCU) per hour X 2 ALBs | \$11.68 |
+| VPC Endpoint | \$0.01 per hour per VPC endpoint per Availability Zone (AZ) X 5 endpoints (Amazon S3, Amazon Athena, Amazon ECR, AWS KMS, and Amazon CloudWatch) X 2 AZs | \$73.00 |
+| VPC Endpoint | \$0.01 per GB data processed per month X 10 GB | \$0.1 |
+| Amazon S3 (storage) |  \$0.023 per GB for First 50 TB/month X 1 GB | \$0.02 |
+| AWS CodeBuild | \$0.005 per build minute on general1.small X 150 minutes per month | \$0.75 |
+| AWS CodePipeline | \$1.00 per active pipeline per month X 1 | \$1.00 |
+
+
+**Total estimated cost per month: \$467.76**
+
+Amazon CloudFront cost is not included in the estimation table, as its monthly [Free Tier](https://aws.amazon.com/cloudfront/pricing/) can fully covered the usage. To avoid the instance capacity issue, additional types of r5.xlarge and 5a.xlarge are included in the EC2 Spot Instance fleet, and r6g.xlarge,r6gd.xlarge are included in the Graviton Spot instance fleet. Their pricing varies based on the time period your instances are running. For more information on Spot Instances pricing, refer to the [Amazon EC2 Spot Instances Pricing page](https://aws.amazon.com/ec2/spot/pricing)
 ## Deployment
 
 Please see detailed Implementation Guide *TO BE UPDATED WITH LIVE LINK *  [here](https://implementationguides.kits.eventoutfitters.aws.dev/sql-etl-eks-1101/compute/sql-based-etl-with-apache-spark-on-eks.html#uninstall-the-guidance)
