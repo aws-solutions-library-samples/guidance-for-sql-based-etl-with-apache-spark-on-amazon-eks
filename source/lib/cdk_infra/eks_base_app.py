@@ -68,7 +68,7 @@ class EksBaseAppConst(Construct):
         # Add Spark Operator to EKS
         eks_cluster.add_helm_chart('SparkOperatorChart',
             chart='spark-operator',
-            repository='https://googlecloudplatform.github.io/spark-on-k8s-operator',
+            repository='https://kubeflow.github.io/spark-operator',
             release='spark-operator',
             version='1.1.27',
             create_namespace=True,
