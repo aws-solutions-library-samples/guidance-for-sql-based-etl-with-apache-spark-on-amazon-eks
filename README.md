@@ -30,7 +30,7 @@ To accelerate data innovation with faster time to insight, this AWS guidance pro
 
 This section provides an architecture diagram and describes the components deployed with this Guidance.
 
-![](source/images/sql-based-etl-spark-architecture-final.png)
+![](source/images/sql-based-etl-with-apache-spark-on-amazon-eks.preview.png)
 
 ### Architecture steps
 
@@ -38,10 +38,10 @@ This section provides an architecture diagram and describes the components deplo
 2. Users interactively develop, test and schedule ETL jobs that process batch and stream data. The data traffic between ETL processes and data stores flows through [Amazon Virtual Private Cloud (VPC)](https://aws.amazon.com/vpc/) Endpoints ([AWS PrivateLink](https://docs.aws.amazon.com/whitepapers/latest/aws-privatelink/what-are-vpc-endpoints.html)) without leaving the AWS network.
 3. [JupyterHub](https://jupyter.org/hub), [Argo Workflows](https://argoproj.github.io/workflows/) and [Kubernetes Operator for Apache Spark](https://github.com/kubeflow/spark-operator/tree/master) are running as containers on [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) cluster. JupyterHub IDE can integrate with a source code repository (GitHub) to track ETL assets changes made by users. The assets include JupyterHub notebook files, SQL scripts etc., to be run with the [Arc ETL framework](https://arc.tripl.ai/).
 4. ETL assets can be updated by users in the source code repository (GitHub), then uploaded to an [Amazon S3](https://aws.amazon.com/s3/) bucket. The synchronization process can be implemented by an automated [CI/CD](https://about.gitlab.com/topics/ci-cd/) deployment process triggered by updates in the source code repository or performed manually.
-5. Users can change Docker build source code uploaded from a code repository to the S3 ETL Asset bucket. It activates an [AWS CodeBuild](https://aws.amazon.com/codebuild/) /[AWS CodePipeline](https://aws.amazon.com/codepipeline) CI/CD pipeline to automatically rebuild and push the Arc ETL Framework container image to an [Amazon ECR](https://aws.amazon.com/ecr) private registry. 
-6. Users schedule ETL jobs via Argo Workflows to be run on [Amazon EKS](https://aws.amazon.com/eks/). These jobs automatically pull Arc ETL Framework container image from ECR, download ETL assets from the artifact S3 bucket, and send application execution logs to [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/). Access to all the AWS services is secured via VPC endpoints.
+5. Users can change Docker build source code uploaded from a code repository to the S3 ETL Asset bucket. It activates an [AWS CodeBuild](https://aws.amazon.com/codebuild/) /[AWS CodePipeline](https://aws.amazon.com/codepipeline) CI/CD pipeline to automatically rebuild and push the [Arc ETL Framework container image](https://github.com/tripl-ai/docker) to [Amazon ECR](https://aws.amazon.com/ecr) private registry. 
+6. Users schedule ETL jobs via Argo Workflows to be run on [Amazon EKS](https://aws.amazon.com/eks/) cluster. These jobs automatically pull Arc ETL Framework container image from ECR, download ETL assets from the artifact S3 bucket, and send application execution logs to [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/). Access to all the AWS services is secured via VPC endpoints.
 7. JupyterHub IDE automatically retrieves login credentials from [Amazon Secrets Manager](https://aws.amazon.com/secrets-manager/) to validate sign-in user requests. Authenticated users can interactively develop and test their notebooks as ETL jobs in JupyterHub.
-8. Users access the ETL output data in Data Lake that supports the [ACID Transaction](https://docs.aws.amazon.com/athena/latest/ug/acid-transactions.html) needs.  Users can query Delta Lake tables via [Amazon Athena](https://docs.aws.amazon.com/athena/latest/ug/what-is.html) integrated with [AWS Glue Data Catalog](https://docs.aws.amazon.com/prescriptive-guidance/latest/serverless-etl-aws-glue/aws-glue-data-catalog.html)
+8. Users can access the ETL output data stored in the S3 bucket that supports the transactional Data lake format and query the [Delta Lake](https://docs.aws.amazon.com/athena/latest/ug/delta-lake-tables.htm) tables through [Amazon Athena](https://aws-preview.aka.amazon.com/athena/) integrated with [AWS Glue Data Catalog](https://docs.aws.amazon.com/prescriptive-guidance/latest/serverless-etl-aws-glue/aws-glue-data-catalog.html).
 
 ### AWS Services used  in this Guidance
 
@@ -86,9 +86,7 @@ for one month.
 | Amazon S3 (storage) |  \$0.023 per GB for First 50 TB/month X 1 GB | \$0.02 |
 | AWS CodeBuild | \$0.005 per build minute on general1.small X 150 minutes per month | \$0.75 |
 | AWS CodePipeline | \$1.00 per active pipeline per month X 1 | \$1.00 |
-
-
-**Total estimated cost per month: \$467.76**
+|**Total estimated cost per month:**| | **\$467.76** |
 
 Amazon CloudFront cost is not included in the estimation table, as its monthly [Free Tier](https://aws.amazon.com/cloudfront/pricing/) can fully covered the usage. To avoid the instance capacity issue, additional types of r5.xlarge and 5a.xlarge are included in the EC2 Spot Instance fleet, and r6g.xlarge,r6gd.xlarge are included in the Graviton Spot instance fleet. Their pricing varies based on the time period your instances are running. For more information on Spot Instances pricing, refer to the [Amazon EC2 Spot Instances Pricing page](https://aws.amazon.com/ec2/spot/pricing)
 ## Deployment
