@@ -89,6 +89,7 @@ for one month.
 |**Total estimated cost per month:**| | **\$467.76** |
 
 Amazon CloudFront cost is not included in the estimation table, as its monthly [Free Tier](https://aws.amazon.com/cloudfront/pricing/) can fully covered the usage. To avoid the instance capacity issue, additional types of r5.xlarge and 5a.xlarge are included in the EC2 Spot Instance fleet, and r6g.xlarge,r6gd.xlarge are included in the Graviton Spot instance fleet. Their pricing varies based on the time period your instances are running. For more information on Spot Instances pricing, refer to the [Amazon EC2 Spot Instances Pricing page](https://aws.amazon.com/ec2/spot/pricing)
+
 ## Deployment
 
 Please see detailed Implementation Guide *TO BE UPDATED WITH LIVE LINK *  [here](https://implementationguides.kits.eventoutfitters.aws.dev/sql-etl-eks-1101/compute/sql-based-etl-with-apache-spark-on-eks.html#uninstall-the-guidance)
