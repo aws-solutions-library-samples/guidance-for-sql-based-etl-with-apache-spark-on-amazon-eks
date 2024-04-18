@@ -92,8 +92,8 @@ Amazon CloudFront cost is not included in the estimation table, as its monthly [
 
 ## Deployment
 
-Please see detailed Implementation Guide *TO BE UPDATED WITH LIVE LINK *  [here](https://implementationguides.kits.eventoutfitters.aws.dev/sql-etl-eks-1101/compute/sql-based-etl-with-apache-spark-on-eks.html#uninstall-the-guidance)
-
+Please see detailed Implementation Guide [here](https://aws-solutions-library-samples.github.io/compute/sql-based-etl-with-apache-spark-on-eks.html)
+with step-by-step guidance deployment, valudation and extension instructions.
 <!--
 =======================================
 
