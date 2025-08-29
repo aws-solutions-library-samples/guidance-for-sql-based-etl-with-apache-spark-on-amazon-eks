@@ -10,7 +10,7 @@ This guidance uses [GitHub](https://github.com/) as the source repository to tra
 
 The Guidance for SQL-Based ETL with Apache Spark on Amazon EKS offers the following features:
 
--	**Build, test, and debug ETL jobs in JupyterHub**: Use [JupyterHub](https://z2jh.jupyter.org/en/latest/), a web-based interactive integrated development environment (IDE) to simplify your ETL development experience. It includes a custom [Arc kernel](https://arc.tripl.ai/getting-started/#notebook) that enables you to define each ETL task or stage in separate blocks. The execution of each block produces data results and a task log. The log captures real-time data processing status and exception messages that can be valuable for debugging.
+-	**Build, test, and debug ETL jobs in JupyterHub**: Use [JupyterHub](https://z2jh.jupyter.org/en/latest/), a web-based interactive integrated development environment (IDE) to simplify your ETL development experience. It includes a custom [Arc kernel](https://github.com/tripl-ai/arc?tab=readme-ov-file#getting-started) that enables you to define each ETL task or stage in separate blocks. The execution of each block produces data results and a task log. The log captures real-time data processing status and exception messages that can be valuable for debugging.
 
 -	**Use a SQL-first approach**: Implement business logic and data quality checks in ETL pipeline development using [Spark SQL](https://spark.apache.org/docs/latest/sql-ref.html). You can process and manipulate data in Spark using your existing SQL expertise.
 
@@ -514,3 +514,4 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 ## License
 
 This project is licensed under the MIT-0 License. See the [LICENSE](LICENSE.txt) file.
+
